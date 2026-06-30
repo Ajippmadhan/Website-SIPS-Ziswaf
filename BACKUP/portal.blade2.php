@@ -1,0 +1,1878 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BMT Syahidah — Portal Anggota</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ════════════════════════════════════════
+   DESIGN TOKENS
+   Palette: deep teal (trustworthy Islamic finance)
+   + warm sand (welcoming personal finance)
+   + saffron accent (Islamic heritage, action)
+   Signature: floating glass "saldo card" with
+   Arabic inscription — the one memorable element
+════════════════════════════════════════ */
+:root {
+  --teal-900: #0c3b35;
+  --teal-700: #145e53;
+  --teal-500: #1d8a78;
+  --teal-300: #4db8a5;
+  --teal-100: #d4f0eb;
+  --saffron: #d4860a;
+  --saffron-light: #f0a832;
+  --saffron-pale: #fef3dc;
+  --sand-100: #faf7f2;
+  --sand-200: #f0ebe0;
+  --sand-300: #e0d8c8;
+  --white: #ffffff;
+  --ink: #111827;
+  --ink-mid: #374151;
+  --ink-soft: #6b7280;
+  --ink-faint: #9ca3af;
+  --border: rgba(20,94,83,0.12);
+  --card-shadow: 0 2px 16px rgba(12,59,53,0.08);
+  --card-shadow-hover: 0 8px 36px rgba(12,59,53,0.14);
+  --radius-xl: 20px;
+  --radius-lg: 14px;
+  --radius-md: 10px;
+  --radius-sm: 7px;
+}
+
+/* ════════ DARK MODE TOKENS ════════ */
+body.dark-mode {
+  --sand-100: #0f172a;      /* Latar belakang utama (Sangat gelap) */
+  --sand-200: #1e293b;      /* Elemen lapis 2 (Gelap) */
+  --sand-300: #334155;
+  --white: #1e293b;         /* Background Card */
+  --ink: #f8fafc;           /* Teks Utama (Sangat terang) */
+  --ink-mid: #cbd5e1;       /* Teks sekunder */
+  --ink-soft: #94a3b8;
+  --ink-faint: #64748b;
+  --border: rgba(255, 255, 255, 0.1);
+  --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  --card-shadow-hover: 0 8px 36px rgba(0, 0, 0, 0.5);
+}
+
+/* Transisi halus saat ganti tema */
+body, .header, .card, .modal, .finput, .fselect, .qa-btn, .prod-card, .dtab, .wp-item, .preset-btn, .pembiayaan-mini {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Penyesuaian khusus Dark Mode */
+body.dark-mode .jatuh-tempo-alert {
+  background: linear-gradient(135deg, rgba(212,134,10,0.15), rgba(212,134,10,0.05));
+}
+body.dark-mode .angsuran-tag {
+  background: linear-gradient(135deg, rgba(212,134,10,0.15), var(--sand-200));
+}
+body.dark-mode .jadwal-table th { background: var(--sand-200); color: var(--ink-mid); }
+body.dark-mode .jadwal-table tr:hover td { background: var(--sand-200); }
+body.dark-mode .modal-overlay { background: rgba(0, 0, 0, 0.6); }
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--sand-100);
+  color: var(--ink);
+  min-height: 100vh;
+}
+
+/* ──────── LAYOUT SHELL ──────── */
+.shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ──────── LEFT NAV ──────── */
+<nav class="nav">
+    <div class="nav-logo">م</div>
+    <div class="nav-items">
+      <div class="nav-btn active" onclick="goPage('beranda')">
+        <span class="ico">🏠</span>
+        <span class="lbl">Beranda</span>
+      </div>
+      <div class="nav-btn" onclick="goPage('simpanan')">
+        <span class="ico">💳</span>
+        <span class="lbl">Simpanan</span>
+      </div>
+      <div class="nav-btn" onclick="goPage('pembiayaan')">
+        <span class="ico">📋</span>
+        <span class="lbl">Pembiayaan</span>
+      </div>
+      <div class="nav-btn" onclick="goPage('ziswakaf')">
+        <span class="ico">🤲</span>
+        <span class="lbl">ZIS & Wakaf</span>
+      </div>
+      <div class="nav-btn" onclick="goPage('profil')">
+        <span class="ico">👤</span>
+        <span class="lbl">Profil</span>
+      </div>
+    </div>
+    <div class="nav-avatar" title="Musyaffa Abdullah">MA</div>
+  </nav>
+  
+.nav {
+  width: 72px;
+  background: var(--teal-900);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0 24px;
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  z-index: 100;
+  gap: 0;
+}
+
+.nav-logo {
+  width: 40px; height: 40px;
+  background: var(--saffron);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Amiri', serif;
+  font-size: 18px; color: #fff;
+  margin-bottom: 32px;
+  flex-shrink: 0;
+}
+
+.nav-items { display: flex; flex-direction: column; gap: 4px; flex: 1; align-items: center; }
+
+.nav-btn {
+  width: 48px; height: 48px;
+  border-radius: 14px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: all 0.18s;
+  position: relative;
+  gap: 3px;
+}
+.nav-btn:hover { background: rgba(255,255,255,0.08); }
+.nav-btn.active { background: var(--teal-700); }
+.nav-btn.active::before {
+  content: '';
+  position: absolute; left: -1px; top: 12px; bottom: 12px;
+  width: 3px; border-radius: 0 2px 2px 0;
+  background: var(--saffron-light);
+}
+.nav-btn .ico { font-size: 19px; line-height: 1; }
+.nav-btn .lbl {
+  font-size: 8.5px; font-weight: 600; letter-spacing: 0.2px;
+  color: rgba(255,255,255,0.45);
+  text-align: center; line-height: 1;
+}
+.nav-btn.active .lbl { color: rgba(255,255,255,0.85); }
+
+.nav-avatar {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: var(--saffron);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 13px; color: #fff;
+  border: 2px solid rgba(255,255,255,0.2);
+  cursor: pointer;
+  margin-top: auto;
+  flex-shrink: 0;
+}
+
+/* ──────── MAIN PANEL ──────── */
+.main {
+  margin-left: 72px;
+  flex: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ──────── TOP HEADER ──────── */
+.header {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 0 32px;
+  height: 60px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 50;
+}
+
+.header-greeting { display: flex; flex-direction: column; }
+.header-name {
+  font-size: 14px; font-weight: 700; color: var(--ink);
+  display: flex; align-items: center; gap: 8px;
+}
+.member-badge {
+  background: var(--teal-100); color: var(--teal-700);
+  font-size: 10px; font-weight: 700; letter-spacing: 0.5px;
+  padding: 2px 7px; border-radius: 20px; text-transform: uppercase;
+}
+.header-no { font-size: 11px; color: var(--ink-soft); margin-top: 1px; font-family: 'DM Mono', monospace; }
+
+.header-right { display: flex; align-items: center; gap: 10px; }
+.hdr-btn {
+  width: 36px; height: 36px; border-radius: 10px;
+  border: 1px solid var(--border); background: var(--white);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 15px;
+  transition: background 0.15s;
+  position: relative;
+}
+.hdr-btn:hover { background: var(--sand-100); }
+.notif-pip {
+  position: absolute; top: 7px; right: 7px;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #f87171; border: 1.5px solid #fff;
+}
+
+/* ──────── PAGE CONTENT ──────── */
+.page { display: none; padding: 28px 32px 40px; animation: slideUp 0.28s ease; }
+.page.active { display: block; }
+@keyframes slideUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+/* ════════ BERANDA ════════ */
+
+/* ── SALDO CARD (SIGNATURE ELEMENT) ── */
+.saldo-card {
+  background: linear-gradient(135deg, var(--teal-900) 0%, var(--teal-700) 55%, #1a7a6a 100%);
+  border-radius: var(--radius-xl);
+  padding: 28px 32px;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+/* Geometric Islamic pattern overlay */
+.saldo-card::before {
+  content: '';
+  position: absolute; top: 0; right: 0; bottom: 0;
+  width: 55%;
+  background:
+    radial-gradient(circle at 80% 30%, rgba(212,134,10,0.18) 0%, transparent 60%),
+    radial-gradient(circle at 90% 80%, rgba(255,255,255,0.06) 0%, transparent 50%);
+  pointer-events: none;
+}
+/* Arabic script decoration */
+.saldo-card::after {
+  content: 'بَارَكَ اللهُ';
+  font-family: 'Amiri', serif;
+  font-size: 56px;
+  color: rgba(255,255,255,0.05);
+  position: absolute;
+  right: 24px; top: 50%;
+  transform: translateY(-50%);
+  line-height: 1;
+  pointer-events: none;
+}
+
+.saldo-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 24px; }
+.saldo-label-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.saldo-label { font-size: 11.5px; font-weight: 500; opacity: 0.65; letter-spacing: 0.3px; }
+.saldo-eye {
+  width: 22px; height: 22px; border-radius: 6px;
+  background: rgba(255,255,255,0.12);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; cursor: pointer;
+  transition: background 0.15s;
+}
+.saldo-eye:hover { background: rgba(255,255,255,0.2); }
+.saldo-amount {
+  font-size: 34px; font-weight: 700; letter-spacing: -1px; line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.saldo-amount .currency { font-size: 18px; font-weight: 500; opacity: 0.7; margin-right: 4px; }
+
+.saldo-chip {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 11px; font-weight: 600;
+  display: flex; align-items: center; gap: 6px;
+}
+.saldo-chip-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #34d399;
+  animation: blink 2s infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+.saldo-product-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+.saldo-pill {
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 8px;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.saldo-pill:hover { background: rgba(255,255,255,0.18); }
+.saldo-pill.active-pill { background: rgba(212,134,10,0.30); border-color: var(--saffron-light); }
+.saldo-pill .p-name { font-size: 10px; opacity: 0.65; margin-bottom: 3px; }
+.saldo-pill .p-val { font-size: 14px; font-weight: 700; }
+
+/* ── QUICK ACTIONS ── */
+.quick-actions {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin-bottom: 28px;
+}
+.qa-btn {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px 10px 14px;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  cursor: pointer;
+  transition: all 0.18s;
+  text-align: center;
+}
+.qa-btn:hover { transform: translateY(-2px); box-shadow: var(--card-shadow-hover); border-color: var(--teal-300); }
+.qa-icon {
+  width: 44px; height: 44px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+}
+.qa-label { font-size: 11.5px; font-weight: 600; color: var(--ink-mid); line-height: 1.3; }
+
+.qa-btn.primary-action .qa-icon { background: var(--teal-900); }
+.qa-btn.secondary-action .qa-icon { background: var(--sand-200); }
+.qa-btn.gold-action .qa-icon { background: var(--saffron-pale); }
+
+/* ── TWO-COL LOWER ── */
+.beranda-lower { display: grid; grid-template-columns: 1fr 320px; gap: 20px; }
+
+/* ── CARD BASE ── */
+.card {
+  background: var(--white);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border);
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+}
+.card-head {
+  padding: 18px 22px 14px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+}
+.card-title { font-size: 14px; font-weight: 700; color: var(--ink); }
+.card-sub { font-size: 11.5px; color: var(--ink-soft); margin-top: 2px; }
+.card-link { font-size: 12px; font-weight: 600; color: var(--teal-500); cursor: pointer; }
+.card-link:hover { text-decoration: underline; }
+.card-body { padding: 18px 22px; }
+
+/* ── MUTASI LIST ── */
+.mutasi-list { display: flex; flex-direction: column; }
+.mutasi-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.mutasi-item:last-child { border-bottom: none; }
+.mutasi-ico {
+  width: 38px; height: 38px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; flex-shrink: 0;
+}
+.mutasi-ico.in { background: rgba(29,138,120,0.10); }
+.mutasi-ico.out { background: rgba(248,113,113,0.10); }
+.mutasi-ico.bagi { background: var(--saffron-pale); }
+.mutasi-info { flex: 1; }
+.mutasi-title { font-size: 13px; font-weight: 600; color: var(--ink); }
+.mutasi-date { font-size: 11px; color: var(--ink-faint); margin-top: 1px; }
+.mutasi-amount { font-size: 14px; font-weight: 700; text-align: right; }
+.mutasi-amount.in { color: var(--teal-500); }
+.mutasi-amount.out { color: #ef4444; }
+.mutasi-amount.bagi { color: var(--saffron); }
+
+/* ── INFO CARDS (right col) ── */
+.info-stack { display: flex; flex-direction: column; gap: 16px; }
+
+.pembiayaan-mini {
+  background: linear-gradient(135deg, var(--sand-200), var(--sand-100));
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  padding: 18px 20px;
+}
+.pm-label { font-size: 10.5px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 10px; }
+.pm-akad { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+.pm-sisa { font-size: 22px; font-weight: 700; color: var(--teal-700); margin-bottom: 14px; }
+.pm-progress { height: 6px; background: var(--sand-300); border-radius: 99px; overflow: hidden; margin-bottom: 8px; }
+.pm-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--teal-700), var(--teal-300)); }
+.pm-meta { display: flex; justify-content: space-between; }
+.pm-meta span { font-size: 11px; color: var(--ink-soft); }
+.pm-meta strong { color: var(--ink); }
+
+.jatuh-tempo-alert {
+  background: linear-gradient(135deg, #fffbeb, #fef9e7);
+  border: 1px solid rgba(212,134,10,0.25);
+  border-radius: var(--radius-lg);
+  padding: 16px 18px;
+  display: flex; gap: 12px; align-items: flex-start;
+}
+.jt-icon { font-size: 22px; flex-shrink: 0; }
+.jt-text {}
+.jt-title { font-size: 12.5px; font-weight: 700; color: var(--saffron); margin-bottom: 3px; }
+.jt-body { font-size: 11.5px; color: var(--ink-mid); line-height: 1.5; }
+.jt-btn {
+  margin-top: 10px;
+  display: inline-flex; align-items: center; gap: 5px;
+  background: var(--saffron); color: #fff;
+  padding: 7px 14px; border-radius: 8px;
+  font-size: 12px; font-weight: 700; cursor: pointer;
+  border: none; font-family: inherit;
+  transition: background 0.15s;
+}
+.jt-btn:hover { background: #b8720a; }
+
+/* ── BAGI HASIL ESTIMASI ── */
+.bagi-card {
+  background: var(--teal-900);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  color: #fff;
+}
+.bagi-lbl { font-size: 10.5px; font-weight: 600; opacity: 0.6; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 6px; }
+.bagi-amount { font-size: 24px; font-weight: 700; color: var(--saffron-light); margin-bottom: 4px; }
+.bagi-sub { font-size: 11px; opacity: 0.55; }
+.bagi-nisbah {
+  margin-top: 14px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 8px;
+  padding: 10px 12px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.bagi-nisbah span { font-size: 11px; opacity: 0.6; }
+.bagi-nisbah strong { font-size: 13px; color: var(--saffron-light); }
+
+/* ════════ SIMPANAN PAGE ════════ */
+.product-tabs {
+  display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap;
+}
+.ptab {
+  padding: 8px 16px; border-radius: 20px;
+  font-size: 12.5px; font-weight: 600;
+  border: 1.5px solid var(--border);
+  background: var(--white);
+  cursor: pointer; color: var(--ink-soft);
+  transition: all 0.15s;
+}
+.ptab.active { background: var(--teal-900); color: #fff; border-color: var(--teal-900); }
+.ptab:hover:not(.active) { border-color: var(--teal-300); color: var(--teal-700); }
+
+.product-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 24px; }
+.prod-card {
+  border-radius: var(--radius-lg);
+  border: 1.5px solid var(--border);
+  background: var(--white);
+  padding: 18px;
+  cursor: pointer; transition: all 0.18s;
+  position: relative; overflow: hidden;
+}
+.prod-card:hover { box-shadow: var(--card-shadow-hover); transform: translateY(-2px); border-color: var(--teal-300); }
+.prod-card.selected { border-color: var(--teal-700); background: rgba(29,138,120,0.04); }
+.prod-stripe {
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 4px; border-radius: 14px 14px 0 0;
+}
+.prod-icon { font-size: 26px; margin: 8px 0 10px; }
+.prod-name { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 2px; }
+.prod-akad { font-size: 10.5px; color: var(--ink-soft); margin-bottom: 10px; }
+.prod-saldo { font-size: 18px; font-weight: 700; color: var(--teal-700); }
+.prod-saldo .currency { font-size: 12px; font-weight: 500; opacity: 0.7; }
+
+/* Form Transaksi */
+.transaksi-form {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+}
+.fg { display: flex; flex-direction: column; gap: 5px; }
+.fg.full { grid-column: 1/-1; }
+.flabel { font-size: 12px; font-weight: 600; color: var(--ink-mid); }
+.finput, .fselect {
+  padding: 11px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  font-family: inherit; font-size: 13px;
+  color: var(--ink); background: var(--white);
+  outline: none; transition: border-color 0.15s;
+}
+.finput:focus, .fselect:focus { border-color: var(--teal-500); }
+.finput::placeholder { color: var(--ink-faint); }
+
+.btn-primary {
+  background: var(--teal-900); color: #fff;
+  padding: 12px 24px; border-radius: var(--radius-md);
+  border: none; font-family: inherit; font-size: 13.5px; font-weight: 700;
+  cursor: pointer; transition: all 0.18s;
+  display: inline-flex; align-items: center; gap: 7px;
+}
+.btn-primary:hover { background: var(--teal-700); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(12,59,53,0.25); }
+.btn-outline {
+  background: transparent; color: var(--teal-700);
+  padding: 11px 22px; border-radius: var(--radius-md);
+  border: 1.5px solid var(--teal-300);
+  font-family: inherit; font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: all 0.15s;
+}
+.btn-outline:hover { background: var(--teal-100); }
+.btn-saffron {
+  background: var(--saffron); color: #fff;
+  padding: 12px 24px; border-radius: var(--radius-md);
+  border: none; font-family: inherit; font-size: 13.5px; font-weight: 700;
+  cursor: pointer; transition: all 0.18s;
+  display: inline-flex; align-items: center; gap: 7px;
+}
+.btn-saffron:hover { background: #b8720a; transform: translateY(-1px); }
+
+/* ════════ PEMBIAYAAN PAGE ════════ */
+.pembiayaan-status-card {
+  background: var(--white);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border);
+  box-shadow: var(--card-shadow);
+  padding: 24px 28px;
+  margin-bottom: 20px;
+  display: grid; grid-template-columns: 1fr auto;
+  gap: 20px; align-items: start;
+}
+.pb-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--ink-soft); margin-bottom: 6px; }
+.pb-akad-name { font-size: 20px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+.pb-tujuan { font-size: 12.5px; color: var(--ink-soft); margin-bottom: 18px; }
+
+.pb-progress-wrap { margin-bottom: 12px; }
+.pb-progress-bar { height: 10px; background: var(--sand-200); border-radius: 99px; overflow: hidden; }
+.pb-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--teal-900), var(--teal-300)); }
+.pb-labels { display: flex; justify-content: space-between; margin-top: 6px; }
+.pb-labels span { font-size: 11px; color: var(--ink-soft); }
+
+.pb-stats { display: flex; gap: 20px; flex-wrap: wrap; }
+.pb-stat { }
+.pb-stat-label { font-size: 10.5px; color: var(--ink-faint); margin-bottom: 2px; }
+.pb-stat-val { font-size: 16px; font-weight: 700; color: var(--ink); }
+
+.angsuran-tag {
+  background: linear-gradient(135deg, var(--saffron-pale), #fff);
+  border: 1px solid rgba(212,134,10,0.2);
+  border-radius: var(--radius-lg);
+  padding: 20px 22px;
+  text-align: center;
+}
+.at-label { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--saffron); margin-bottom: 6px; }
+.at-amount { font-size: 26px; font-weight: 700; color: var(--teal-900); line-height: 1; margin-bottom: 4px; }
+.at-due { font-size: 11.5px; color: var(--ink-soft); margin-bottom: 14px; }
+
+.jadwal-table { width: 100%; border-collapse: collapse; }
+.jadwal-table th { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--ink-soft); padding: 8px 12px; text-align: left; background: var(--sand-100); border-bottom: 1px solid var(--border); }
+.jadwal-table td { padding: 11px 12px; border-bottom: 1px solid var(--border); font-size: 12.5px; }
+.jadwal-table tr:last-child td { border-bottom: none; }
+.jadwal-table tr:hover td { background: var(--sand-100); }
+.pill-lunas { background: var(--teal-100); color: var(--teal-700); padding: 2px 8px; border-radius: 20px; font-size: 10.5px; font-weight: 700; }
+.pill-belum { background: var(--sand-200); color: var(--ink-soft); padding: 2px 8px; border-radius: 20px; font-size: 10.5px; font-weight: 700; }
+.pill-jatuh { background: rgba(212,134,10,0.12); color: var(--saffron); padding: 2px 8px; border-radius: 20px; font-size: 10.5px; font-weight: 700; }
+
+/* ════════ ZIS & WAKAF PAGE ════════ */
+.donasi-tabs { display: flex; gap: 0; margin-bottom: 24px; background: var(--sand-200); border-radius: var(--radius-lg); padding: 4px; }
+.dtab {
+  flex: 1; padding: 10px; border-radius: var(--radius-md);
+  font-size: 12.5px; font-weight: 600; cursor: pointer;
+  text-align: center; transition: all 0.18s; color: var(--ink-soft);
+}
+.dtab.active { background: var(--white); color: var(--teal-900); box-shadow: 0 1px 8px rgba(12,59,53,0.10); }
+
+.zis-form-wrap { display: grid; grid-template-columns: 1fr 320px; gap: 20px; }
+
+.nominal-presets { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+.preset-btn {
+  padding: 7px 14px; border-radius: 8px;
+  border: 1.5px solid var(--border); background: var(--white);
+  font-size: 12px; font-weight: 600; cursor: pointer; color: var(--ink-mid);
+  transition: all 0.15s; font-family: inherit;
+}
+.preset-btn:hover { border-color: var(--teal-300); color: var(--teal-700); background: var(--teal-100); }
+.preset-btn.selected { border-color: var(--teal-700); background: var(--teal-100); color: var(--teal-900); }
+
+.wakaf-programs { display: flex; flex-direction: column; gap: 12px; }
+.wp-item {
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px 18px;
+  cursor: pointer; transition: all 0.15s;
+  background: var(--white);
+}
+.wp-item:hover { border-color: var(--teal-300); }
+.wp-item.selected-prog { border-color: var(--teal-700); background: rgba(29,138,120,0.04); }
+.wp-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+.wp-name { font-size: 13px; font-weight: 700; color: var(--ink); }
+.wp-cat { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 20px; }
+.wp-cat.pend { background: rgba(59,130,246,0.1); color: #3b82f6; }
+.wp-cat.ekon { background: rgba(29,138,120,0.1); color: var(--teal-700); }
+.wp-cat.sehat { background: rgba(239,68,68,0.1); color: #ef4444; }
+.wp-progress { height: 5px; background: var(--sand-200); border-radius: 99px; overflow: hidden; margin-bottom: 5px; }
+.wp-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--teal-700), var(--teal-300)); }
+.wp-meta { display: flex; justify-content: space-between; }
+.wp-meta span { font-size: 10.5px; color: var(--ink-soft); }
+
+/* Riwayat ZIS */
+.zis-riwayat { display: flex; flex-direction: column; gap: 0; }
+.zr-item { display: flex; gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); }
+.zr-item:last-child { border-bottom: none; }
+.zr-ico { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.zr-info { flex: 1; }
+.zr-name { font-size: 12.5px; font-weight: 600; color: var(--ink); }
+.zr-date { font-size: 11px; color: var(--ink-faint); }
+.zr-amount { font-size: 13.5px; font-weight: 700; color: var(--saffron); }
+
+/* ════════ PROFIL PAGE ════════ */
+.profil-hero {
+  background: linear-gradient(135deg, var(--teal-900), var(--teal-700));
+  border-radius: var(--radius-xl);
+  padding: 28px 32px;
+  display: flex; gap: 24px; align-items: center;
+  margin-bottom: 24px; color: #fff;
+  position: relative; overflow: hidden;
+}
+.profil-hero::before {
+  content: '';
+  position: absolute; right: -20px; top: -30px;
+  width: 160px; height: 160px; border-radius: 50%;
+  background: rgba(212,134,10,0.12);
+}
+.profil-av {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: var(--saffron);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px; font-weight: 700; color: #fff;
+  border: 3px solid rgba(255,255,255,0.25);
+  flex-shrink: 0;
+}
+.profil-info {}
+.profil-name { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+.profil-no { font-size: 12px; opacity: 0.6; font-family: 'DM Mono', monospace; margin-bottom: 8px; }
+.profil-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+.profil-tag {
+  background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 20px; padding: 3px 10px; font-size: 11px; font-weight: 600;
+}
+
+.profil-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+.info-list { display: flex; flex-direction: column; gap: 0; }
+.info-row { display: flex; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); }
+.info-row:last-child { border-bottom: none; }
+.info-label { width: 150px; font-size: 12px; color: var(--ink-soft); flex-shrink: 0; }
+.info-value { font-size: 13px; font-weight: 500; color: var(--ink); flex: 1; }
+.info-edit { font-size: 11.5px; color: var(--teal-500); cursor: pointer; font-weight: 600; }
+
+.ring-section { padding: 16px 0; }
+.ring-wrap { display: flex; align-items: center; gap: 24px; }
+.ring-svg { flex-shrink: 0; }
+.ring-legend-v { display: flex; flex-direction: column; gap: 8px; }
+.rl-item { display: flex; align-items: center; gap: 8px; }
+.rl-dot { width: 9px; height: 9px; border-radius: 3px; flex-shrink: 0; }
+.rl-label { font-size: 12px; color: var(--ink-soft); flex: 1; }
+.rl-val { font-size: 12.5px; font-weight: 700; color: var(--ink); }
+
+/* ════════ TOAST ════════ */
+.toast {
+  position: fixed; bottom: 24px; right: 24px;
+  background: var(--teal-900); color: #fff;
+  padding: 13px 18px; border-radius: var(--radius-lg);
+  font-size: 13px; font-weight: 500;
+  box-shadow: 0 8px 28px rgba(12,59,53,0.28);
+  display: flex; align-items: center; gap: 8px;
+  z-index: 999; max-width: 340px;
+  transform: translateY(70px); opacity: 0;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+}
+.toast.show { transform: translateY(0); opacity: 1; pointer-events: auto; }
+
+/* ════════ MODAL OVERLAY ════════ */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(12,59,53,0.35);
+  backdrop-filter: blur(4px);
+  z-index: 200;
+  display: none; align-items: center; justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--white);
+  border-radius: var(--radius-xl);
+  padding: 28px 32px;
+  max-width: 440px; width: 90%;
+  box-shadow: 0 24px 64px rgba(12,59,53,0.2);
+  animation: popIn 0.25s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes popIn { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.modal-title { font-size: 17px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+.modal-sub { font-size: 12.5px; color: var(--ink-soft); margin-bottom: 20px; line-height: 1.5; }
+.modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+.modal-close { position: absolute; display: none; }
+
+/* ════════ OTP INPUT ════════ */
+.otp-wrap { display: flex; gap: 10px; justify-content: center; margin: 16px 0; }
+.otp-digit {
+  width: 48px; height: 56px;
+  border: 2px solid var(--border); border-radius: var(--radius-md);
+  font-size: 22px; font-weight: 700; text-align: center;
+  font-family: 'DM Mono', monospace; color: var(--teal-900);
+  outline: none; transition: border-color 0.15s;
+}
+.otp-digit:focus { border-color: var(--teal-500); }
+
+/* ══ SECTION DIVIDER ══ */
+.sec-div { display: flex; align-items: center; gap: 10px; margin: 20px 0 14px; }
+.sec-div-line { flex: 1; height: 1px; background: var(--border); }
+.sec-div-label { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--ink-faint); white-space: nowrap; }
+
+/* ══ HIDDEN AMOUNT ══ */
+.amount-hidden { letter-spacing: 4px; }
+
+/* ══ LOADING SKELETON (aesthetic) ══ */
+.skel { background: linear-gradient(90deg, var(--sand-200) 25%, var(--sand-100) 50%, var(--sand-200) 75%); background-size: 200% 100%; animation: skel 1.5s infinite; border-radius: 6px; }
+@keyframes skel { 0%{background-position:200%} 100%{background-position:-200%} }
+
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <!-- ════ MAIN ════ -->
+  <div class="main">
+
+    <!-- HEADER -->
+    <header class="header">
+      <div class="header-greeting">
+        <div class="header-name">
+          Musyaffa Abdullah
+          <span class="member-badge">Alumni</span>
+        </div>
+        <div class="header-no">BMT-2024-0029 · Ciputat, Tangerang Selatan</div>
+      </div>
+      <div class="header-right">
+        <!-- TOMBOL DARK MODE DI SINI -->
+        <div class="hdr-btn" id="theme-toggle" onclick="toggleTheme()" title="Ganti Mode Tema">🌙</div>
+        <div class="hdr-btn">🔔<span class="notif-pip"></span></div>
+        <div class="hdr-btn">❓</div>
+        <div class="hdr-btn">⚙️</div>
+      </div>
+    </header>
+
+    <!-- ════ PAGE: BERANDA ════ -->
+    <div class="page active" id="page-beranda">
+
+      <!-- SALDO CARD (Signature element) -->
+      <div class="saldo-card">
+        <div class="saldo-top">
+          <div>
+            <div class="saldo-label-row">
+              <span class="saldo-label">Total Saldo Simpanan</span>
+              <div class="saldo-eye" onclick="toggleHide()" id="eye-btn" title="Sembunyikan saldo">👁</div>
+            </div>
+            <div class="saldo-amount" id="saldo-display">
+              <span class="currency">Rp</span><span id="saldo-val">7.240.500</span>
+            </div>
+          </div>
+          <div class="saldo-chip">
+            <span class="saldo-chip-dot"></span>
+            Rekening Aktif
+          </div>
+        </div>
+        <div class="saldo-product-pills">
+          <div class="saldo-pill active-pill" onclick="selectPill(this, 'Simpanan Syahida', '4.850.000')">
+            <div class="p-name">Syahida</div>
+            <div class="p-val" id="pill-syahida">Rp 4,85 jt</div>
+          </div>
+          <div class="saldo-pill" onclick="selectPill(this, 'Si Cerdas', '1.500.000')">
+            <div class="p-name">Si Cerdas</div>
+            <div class="p-val">Rp 1,5 jt</div>
+          </div>
+          <div class="saldo-pill" onclick="selectPill(this, 'Si Mabrur', '890.500')">
+            <div class="p-name">Si Mabrur</div>
+            <div class="p-val">Rp 890 rb</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- QUICK ACTIONS -->
+      <div class="quick-actions">
+        <div class="qa-btn primary-action" onclick="goPage('simpanan')">
+          <div class="qa-icon">⬆️</div>
+          <span class="qa-label">Setor Simpanan</span>
+        </div>
+        <div class="qa-btn primary-action" onclick="goPage('simpanan')">
+          <div class="qa-icon">⬇️</div>
+          <span class="qa-label">Tarik Dana</span>
+        </div>
+        <div class="qa-btn secondary-action" onclick="goPage('pembiayaan')">
+          <div class="qa-icon">📝</div>
+          <span class="qa-label">Ajukan Pembiayaan</span>
+        </div>
+        <div class="qa-btn gold-action" onclick="goPage('ziswakaf')">
+          <div class="qa-icon">🌿</div>
+          <span class="qa-label">Wakaf Produktif</span>
+        </div>
+        <div class="qa-btn gold-action" onclick="goPage('ziswakaf')">
+          <div class="qa-icon">⭐</div>
+          <span class="qa-label">Bayar Zakat</span>
+        </div>
+      </div>
+
+      <!-- LOWER -->
+      <div class="beranda-lower">
+
+        <!-- Mutasi Rekening -->
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Riwayat Transaksi</div>
+              <div class="card-sub">Semua rekening · Mei 2026</div>
+            </div>
+            <span class="card-link" onclick="goPage('simpanan')">Lihat semua →</span>
+          </div>
+          <div class="card-body">
+            <div class="mutasi-list">
+              <div class="mutasi-item">
+                <div class="mutasi-ico in">⬆️</div>
+                <div class="mutasi-info">
+                  <div class="mutasi-title">Setoran Simpanan Syahida</div>
+                  <div class="mutasi-date">16 Mei 2026, 09:14</div>
+                </div>
+                <div class="mutasi-amount in">+Rp 500.000</div>
+              </div>
+              <div class="mutasi-item">
+                <div class="mutasi-ico bagi">✨</div>
+                <div class="mutasi-info">
+                  <div class="mutasi-title">Bagi Hasil Bulan April</div>
+                  <div class="mutasi-date">01 Mei 2026, 00:01</div>
+                </div>
+                <div class="mutasi-amount bagi">+Rp 48.700</div>
+              </div>
+              <div class="mutasi-item">
+                <div class="mutasi-ico out">⬇️</div>
+                <div class="mutasi-info">
+                  <div class="mutasi-title">Penarikan Dana</div>
+                  <div class="mutasi-date">28 Apr 2026, 14:32</div>
+                </div>
+                <div class="mutasi-amount out">−Rp 200.000</div>
+              </div>
+              <div class="mutasi-item">
+                <div class="mutasi-ico in">⬆️</div>
+                <div class="mutasi-info">
+                  <div class="mutasi-title">Setoran Si Mabrur</div>
+                  <div class="mutasi-date">20 Apr 2026, 11:05</div>
+                </div>
+                <div class="mutasi-amount in">+Rp 150.000</div>
+              </div>
+              <div class="mutasi-item">
+                <div class="mutasi-ico bagi">🤲</div>
+                <div class="mutasi-info">
+                  <div class="mutasi-title">Wakaf Produktif — Beasiswa</div>
+                  <div class="mutasi-date">15 Apr 2026, 10:00</div>
+                </div>
+                <div class="mutasi-amount" style="color:var(--saffron)">Rp 500.000</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Info stack -->
+        <div class="info-stack">
+
+          <!-- Pembiayaan aktif mini -->
+          <div class="pembiayaan-mini">
+            <div class="pm-label">Pembiayaan Aktif</div>
+            <div class="pm-akad">Murabahah — Peralatan Usaha</div>
+            <div class="pm-sisa">Rp 18.750.000 sisa</div>
+            <div class="pm-progress">
+              <div class="pm-fill" style="width:62.5%"></div>
+            </div>
+            <div class="pm-meta">
+              <span>Lunas <strong>62.5%</strong></span>
+              <span>Sisa <strong>15 angsuran</strong></span>
+            </div>
+          </div>
+
+          <!-- Jatuh tempo alert -->
+          <div class="jatuh-tempo-alert">
+            <span class="jt-icon">⏰</span>
+            <div class="jt-text">
+              <div class="jt-title">Angsuran Jatuh Tempo</div>
+              <div class="jt-body">Angsuran ke-10 sebesar <strong>Rp 1.250.000</strong> jatuh tempo pada <strong>20 Mei 2026</strong> (4 hari lagi).</div>
+              <button class="jt-btn" onclick="openModal('modal-bayar')">Bayar Sekarang →</button>
+            </div>
+          </div>
+
+          <!-- Estimasi bagi hasil -->
+          <div class="bagi-card">
+            <div class="bagi-lbl">Estimasi Bagi Hasil Juni</div>
+            <div class="bagi-amount">Rp 51.200</div>
+            <div class="bagi-sub">Berdasarkan saldo rata-rata bulan ini</div>
+            <div class="bagi-nisbah">
+              <span>Nisbah Anggota</span>
+              <strong>60 : 40</strong>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div><!-- /beranda -->
+
+    <!-- ════ PAGE: SIMPANAN ════ -->
+    <div class="page" id="page-simpanan">
+
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px">
+        <div>
+          <h2 style="font-size:20px;font-weight:700">Simpanan Saya</h2>
+          <p style="font-size:12.5px;color:var(--ink-soft);margin-top:2px">Kelola rekening simpanan dan ajukan transaksi</p>
+        </div>
+      </div>
+
+      <!-- Product Cards -->
+      <div class="product-cards">
+        <div class="prod-card selected" onclick="selectProd(this)">
+          <div class="prod-stripe" style="background:linear-gradient(90deg,var(--teal-900),var(--teal-300))"></div>
+          <div class="prod-icon">💼</div>
+          <div class="prod-name">Simpanan Syahida</div>
+          <div class="prod-akad">Wadiah Yad Dhamanah</div>
+          <div class="prod-saldo"><span class="currency">Rp </span>4.850.000</div>
+        </div>
+        <div class="prod-card" onclick="selectProd(this)">
+          <div class="prod-stripe" style="background:linear-gradient(90deg,#3b82f6,#93c5fd)"></div>
+          <div class="prod-icon">🎓</div>
+          <div class="prod-name">Si Cerdas</div>
+          <div class="prod-akad">Mudharabah Muthlaqah</div>
+          <div class="prod-saldo"><span class="currency">Rp </span>1.500.000</div>
+        </div>
+        <div class="prod-card" onclick="selectProd(this)">
+          <div class="prod-stripe" style="background:linear-gradient(90deg,var(--saffron),var(--saffron-light))"></div>
+          <div class="prod-icon">🕌</div>
+          <div class="prod-name">Si Mabrur</div>
+          <div class="prod-akad">Mudharabah Muthlaqah</div>
+          <div class="prod-saldo"><span class="currency">Rp </span>890.500</div>
+        </div>
+      </div>
+
+      <!-- Aksi Transaksi -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px">
+
+        <div class="card">
+          <div class="card-head"><div class="card-title">Setor Simpanan</div></div>
+          <div class="card-body">
+            <div class="transaksi-form">
+              <div class="fg">
+                <label class="flabel">Rekening Tujuan</label>
+                <select class="fselect">
+                  <option>Simpanan Syahida (Utama)</option>
+                  <option>Si Cerdas</option>
+                  <option>Si Mabrur</option>
+                </select>
+              </div>
+              <div class="fg">
+                <label class="flabel">Nominal Setoran (Rp)</label>
+                <input class="finput" type="number" placeholder="Minimum Rp 10.000">
+              </div>
+              <div class="fg full">
+                <label class="flabel">Metode Pembayaran</label>
+                <select class="fselect">
+                  <option>Transfer Bank (Virtual Account)</option>
+                  <option>Setor Tunai di Kantor</option>
+                </select>
+              </div>
+            </div>
+            <div style="margin-top:16px;padding:14px;background:var(--sand-100);border-radius:var(--radius-md);font-size:12px;color:var(--ink-soft);line-height:1.6">
+              💡 Setelah klik <strong>Generate VA</strong>, lakukan transfer ke nomor Virtual Account yang ditampilkan. Saldo akan otomatis diperbarui.
+            </div>
+            <div style="display:flex;gap:10px;margin-top:14px">
+              <button class="btn-primary" onclick="openModal('modal-va')">Generate Virtual Account</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><div class="card-title">Tarik Dana</div></div>
+          <div class="card-body">
+            <div class="transaksi-form">
+              <div class="fg">
+                <label class="flabel">Rekening Sumber</label>
+                <select class="fselect">
+                  <option>Simpanan Syahida · Saldo Rp 4.850.000</option>
+                </select>
+              </div>
+              <div class="fg">
+                <label class="flabel">Nominal Penarikan (Rp)</label>
+                <input class="finput" type="number" placeholder="Maks. Rp 4.850.000">
+              </div>
+              <div class="fg">
+                <label class="flabel">Bank Tujuan</label>
+                <select class="fselect">
+                  <option>BRI — *** *** 4821</option>
+                  <option>Mandiri — *** *** 9012</option>
+                  <option>Rekening Lain</option>
+                </select>
+              </div>
+              <div class="fg">
+                <label class="flabel">Keterangan</label>
+                <input class="finput" type="text" placeholder="Opsional">
+              </div>
+            </div>
+            <div style="display:flex;gap:10px;margin-top:14px">
+              <button class="btn-primary" onclick="openModal('modal-otp')">Ajukan Penarikan</button>
+              <button class="btn-outline">Batalkan</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Riwayat Lengkap -->
+      <div class="card">
+        <div class="card-head">
+          <div><div class="card-title">Mutasi Rekening</div><div class="card-sub">30 hari terakhir</div></div>
+          <button class="btn-outline" style="font-size:11.5px;padding:7px 14px" onclick="toast('📥 Laporan mutasi dikirim ke email Anda!')">📥 Unduh Mutasi</button>
+        </div>
+        <div class="card-body" style="padding:0">
+          <table class="jadwal-table">
+            <thead>
+              <tr><th>Tanggal</th><th>Keterangan</th><th>Produk</th><th>Debet</th><th>Kredit</th><th>Saldo</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>16/05/26</td><td>Setoran</td><td>Syahida</td><td>—</td><td style="color:var(--teal-700);font-weight:600">+500.000</td><td style="font-family:'DM Mono',monospace;font-size:12px">4.850.000</td></tr>
+              <tr><td>01/05/26</td><td>Bagi Hasil Apr</td><td>Syahida</td><td>—</td><td style="color:var(--saffron);font-weight:600">+48.700</td><td style="font-family:'DM Mono',monospace;font-size:12px">4.350.000</td></tr>
+              <tr><td>28/04/26</td><td>Penarikan</td><td>Syahida</td><td style="color:#ef4444;font-weight:600">−200.000</td><td>—</td><td style="font-family:'DM Mono',monospace;font-size:12px">4.301.300</td></tr>
+              <tr><td>20/04/26</td><td>Setoran Rutin</td><td>Si Mabrur</td><td>—</td><td style="color:var(--teal-700);font-weight:600">+150.000</td><td style="font-family:'DM Mono',monospace;font-size:12px">890.500</td></tr>
+              <tr><td>15/04/26</td><td>Wakaf Beasiswa</td><td>ZIS/Wakaf</td><td style="color:var(--saffron);font-weight:600">500.000</td><td>—</td><td style="font-family:'DM Mono',monospace;font-size:12px">4.501.300</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div><!-- /simpanan -->
+
+    <!-- ════ PAGE: PEMBIAYAAN ════ -->
+    <div class="page" id="page-pembiayaan">
+
+      <div style="margin-bottom:22px">
+        <h2 style="font-size:20px;font-weight:700">Pembiayaan Saya</h2>
+        <p style="font-size:12.5px;color:var(--ink-soft);margin-top:2px">Status pembiayaan aktif dan pengajuan baru</p>
+      </div>
+
+      <!-- Status Pembiayaan Aktif -->
+      <div class="pembiayaan-status-card">
+        <div>
+          <div class="pb-title">Pembiayaan Aktif · ID: PBY-2024-0291</div>
+          <div class="pb-akad-name">Murabahah — Peralatan Usaha Warung</div>
+          <div class="pb-tujuan">Pembelian peralatan masak dan display makanan untuk warung makan Depok</div>
+
+          <div class="pb-progress-wrap">
+            <div class="pb-progress-bar">
+              <div class="pb-fill" style="width:62.5%"></div>
+            </div>
+            <div class="pb-labels">
+              <span>Angsuran ke-15 dari 24</span>
+              <span style="font-weight:700;color:var(--teal-700)">62.5% Lunas</span>
+            </div>
+          </div>
+
+          <div class="pb-stats">
+            <div class="pb-stat">
+              <div class="pb-stat-label">Pokok + Margin</div>
+              <div class="pb-stat-val">Rp 30.000.000</div>
+            </div>
+            <div class="pb-stat">
+              <div class="pb-stat-label">Sudah Dibayar</div>
+              <div class="pb-stat-val" style="color:var(--teal-700)">Rp 18.750.000</div>
+            </div>
+            <div class="pb-stat">
+              <div class="pb-stat-label">Sisa Pokok</div>
+              <div class="pb-stat-val" style="color:#ef4444">Rp 11.250.000</div>
+            </div>
+            <div class="pb-stat">
+              <div class="pb-stat-label">Jatuh Tempo</div>
+              <div class="pb-stat-val">20 Mei 2026</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="angsuran-tag">
+          <div class="at-label">Angsuran Bulan Ini</div>
+          <div class="at-amount">Rp 1.250.000</div>
+          <div class="at-due">Jatuh tempo 20 Mei 2026</div>
+          <button class="btn-saffron" onclick="openModal('modal-bayar')" style="width:100%;justify-content:center">Bayar Angsuran</button>
+        </div>
+      </div>
+
+      <!-- Jadwal Angsuran -->
+      <div class="card" style="margin-bottom:24px">
+        <div class="card-head">
+          <div><div class="card-title">Jadwal Angsuran</div><div class="card-sub">Murabahah · 24 bulan</div></div>
+          <button class="btn-outline" style="font-size:11.5px;padding:7px 14px" onclick="toast('📥 Jadwal angsuran dikirim ke email Anda!')">📥 Unduh Jadwal</button>
+        </div>
+        <div class="card-body" style="padding:0">
+          <table class="jadwal-table">
+            <thead>
+              <tr><th>#</th><th>Jatuh Tempo</th><th>Pokok</th><th>Margin</th><th>Total Angsuran</th><th>Sisa Pokok</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>13</td><td>20 Mar 2026</td><td>Rp 1.041.667</td><td>Rp 208.333</td><td>Rp 1.250.000</td><td>Rp 15.625.000</td><td><span class="pill-lunas">✓ Lunas</span></td></tr>
+              <tr><td>14</td><td>20 Apr 2026</td><td>Rp 1.041.667</td><td>Rp 208.333</td><td>Rp 1.250.000</td><td>Rp 14.583.333</td><td><span class="pill-lunas">✓ Lunas</span></td></tr>
+              <tr style="background:rgba(212,134,10,0.04)"><td style="font-weight:700">15</td><td style="font-weight:700">20 Mei 2026</td><td>Rp 1.041.667</td><td>Rp 208.333</td><td style="font-weight:700">Rp 1.250.000</td><td>Rp 13.541.667</td><td><span class="pill-jatuh">⏰ Segera</span></td></tr>
+              <tr><td>16</td><td>20 Jun 2026</td><td>Rp 1.041.667</td><td>Rp 208.333</td><td>Rp 1.250.000</td><td>Rp 12.500.000</td><td><span class="pill-belum">Belum</span></td></tr>
+              <tr><td>17</td><td>20 Jul 2026</td><td>Rp 1.041.667</td><td>Rp 208.333</td><td>Rp 1.250.000</td><td>Rp 11.458.333</td><td><span class="pill-belum">Belum</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Ajukan Pembiayaan Baru -->
+      <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">Ajukan Pembiayaan Baru</div><div class="sec-div-line"></div></div>
+
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px">
+        <div class="prod-card" onclick="selectAkadAnggota(this,'Murabahah')">
+          <div class="prod-stripe" style="background:linear-gradient(90deg,var(--teal-900),var(--teal-300))"></div>
+          <div class="prod-icon">🛒</div>
+          <div class="prod-name">Murabahah</div>
+          <div class="prod-akad">Jual-beli, angsuran tetap</div>
+          <div style="font-size:11px;color:var(--ink-faint);margin-top:6px">Cocok untuk pembelian aset</div>
+        </div>
+        <div class="prod-card" onclick="selectAkadAnggota(this,'Mudharabah')">
+          <div class="prod-stripe" style="background:linear-gradient(90deg,var(--saffron),var(--saffron-light))"></div>
+          <div class="prod-icon">🤝</div>
+          <div class="prod-name">Mudharabah</div>
+          <div class="prod-akad">Bagi hasil usaha</div>
+          <div style="font-size:11px;color:var(--ink-faint);margin-top:6px">Cocok untuk modal usaha</div>
+        </div>
+        <div class="prod-card" onclick="selectAkadAnggota(this,'Musyarakah')">
+          <div class="prod-stripe" style="background:linear-gradient(90deg,#3b82f6,#93c5fd)"></div>
+          <div class="prod-icon">🏗️</div>
+          <div class="prod-name">Musyarakah</div>
+          <div class="prod-akad">Usaha patungan</div>
+          <div style="font-size:11px;color:var(--ink-faint);margin-top:6px">Cocok untuk ekspansi bisnis</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title" id="new-pb-title">Formulir Pengajuan — Pilih akad di atas</div>
+        </div>
+        <div class="card-body">
+          <div class="transaksi-form">
+            <div class="fg">
+              <label class="flabel">Jenis Akad</label>
+              <select class="fselect" id="akad-select">
+                <option>Pilih akad terlebih dahulu</option>
+                <option>Murabahah</option>
+                <option>Mudharabah</option>
+                <option>Musyarakah</option>
+              </select>
+            </div>
+            <div class="fg">
+              <label class="flabel">Tujuan Pembiayaan</label>
+              <input class="finput" type="text" placeholder="Contoh: Modal tambahan warung makan">
+            </div>
+            <div class="fg">
+              <label class="flabel">Nominal Diajukan (Rp)</label>
+              <input class="finput" type="number" placeholder="0" id="pb-nominal" oninput="hitungSimulasi()">
+            </div>
+            <div class="fg">
+              <label class="flabel">Jangka Waktu</label>
+              <select class="fselect" id="pb-tenor" onchange="hitungSimulasi()">
+                <option value="6">6 Bulan</option>
+                <option value="12" selected>12 Bulan</option>
+                <option value="24">24 Bulan</option>
+                <option value="36">36 Bulan</option>
+              </select>
+            </div>
+            <div class="fg">
+              <label class="flabel">Jenis Jaminan</label>
+              <select class="fselect">
+                <option>BPKB Kendaraan</option>
+                <option>Sertifikat Tanah</option>
+                <option>Sertifikat Rumah</option>
+              </select>
+            </div>
+            <div class="fg">
+              <label class="flabel">Upload KTP</label>
+              <input class="finput" type="file" accept="image/*,application/pdf">
+            </div>
+            <div class="fg full">
+              <label class="flabel">Deskripsi Usaha / Kebutuhan</label>
+              <textarea class="finput" rows="3" style="resize:vertical" placeholder="Jelaskan detail kebutuhan pembiayaan dan rencana penggunaan dana..."></textarea>
+            </div>
+          </div>
+
+          <!-- Simulasi Box -->
+          <div id="sim-box" style="display:none;background:var(--sand-100);border:1.5px dashed var(--teal-300);border-radius:var(--radius-md);padding:16px;margin-top:16px">
+            <div style="font-size:10.5px;font-weight:700;color:var(--teal-500);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px">✦ Simulasi Angsuran (Margin 3%/tahun)</div>
+            <div style="display:flex;gap:24px;flex-wrap:wrap">
+              <div><div style="font-size:11px;color:var(--ink-soft)">Pokok</div><div style="font-size:16px;font-weight:700;color:var(--ink)" id="s-pokok">—</div></div>
+              <div><div style="font-size:11px;color:var(--ink-soft)">Total Margin</div><div style="font-size:16px;font-weight:700;color:var(--saffron)" id="s-margin">—</div></div>
+              <div><div style="font-size:11px;color:var(--ink-soft)">Per Bulan</div><div style="font-size:18px;font-weight:700;color:var(--teal-700)" id="s-angs">—</div></div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:10px;margin-top:16px">
+            <button class="btn-primary" onclick="toast('📋 Pengajuan berhasil dikirim! No. Ref: PBY-2026-0892. Status dapat dipantau di halaman ini.')">Kirim Pengajuan</button>
+            <button class="btn-outline">Simpan Draft</button>
+          </div>
+        </div>
+      </div>
+    </div><!-- /pembiayaan -->
+
+    <!-- ════ PAGE: ZIS & WAKAF ════ -->
+    <div class="page" id="page-ziswakaf">
+
+      <div style="margin-bottom:22px">
+        <h2 style="font-size:20px;font-weight:700">ZIS & Wakaf Produktif</h2>
+        <p style="font-size:12.5px;color:var(--ink-soft);margin-top:2px">Salurkan zakat, infaq, sedekah, dan wakaf uang secara digital</p>
+      </div>
+
+      <!-- Tabs -->
+      <div class="donasi-tabs" id="donasi-tabs">
+        <div class="dtab active" onclick="switchDonasi(this,'tab-zis')">Zakat, Infaq & Sedekah</div>
+        <div class="dtab" onclick="switchDonasi(this,'tab-wakaf')">Wakaf Produktif</div>
+        <div class="dtab" onclick="switchDonasi(this,'tab-riwayat')">Riwayat Donasi</div>
+      </div>
+
+      <!-- Tab: ZIS -->
+      <div id="tab-zis">
+        <div class="zis-form-wrap">
+          <div class="card">
+            <div class="card-head"><div class="card-title">Salurkan ZIS</div></div>
+            <div class="card-body">
+              <div class="product-tabs" id="zis-type-tabs">
+                <div class="ptab active" onclick="switchZisType(this)">Zakat Maal</div>
+                <div class="ptab" onclick="switchZisType(this)">Infaq</div>
+                <div class="ptab" onclick="switchZisType(this)">Sedekah</div>
+                <div class="ptab" onclick="switchZisType(this)">Zakat Fitrah</div>
+              </div>
+
+              <div style="background:var(--teal-100);border-radius:var(--radius-md);padding:14px 16px;font-size:12.5px;color:var(--teal-900);line-height:1.6;margin-bottom:16px">
+                <strong>Zakat Maal</strong> — Kewajiban atas harta yang telah mencapai nisab (setara 85g emas) dan haul (1 tahun). Kadar zakat: <strong>2,5%</strong>.
+              </div>
+
+              <div style="margin-bottom:14px">
+                <label class="flabel" style="display:block;margin-bottom:6px">Nominal Zakat (Rp)</label>
+                <input class="finput" style="width:100%" type="number" placeholder="Masukkan nominal atau pilih di bawah" id="zis-nominal">
+                <div class="nominal-presets" style="margin-top:8px">
+                  <button class="preset-btn" onclick="setPreset(this,'100000')">Rp 100rb</button>
+                  <button class="preset-btn" onclick="setPreset(this,'250000')">Rp 250rb</button>
+                  <button class="preset-btn" onclick="setPreset(this,'500000')">Rp 500rb</button>
+                  <button class="preset-btn" onclick="setPreset(this,'1000000')">Rp 1 juta</button>
+                  <button class="preset-btn" onclick="setPreset(this,'custom')">Nominal Lain</button>
+                </div>
+              </div>
+
+              <div class="fg" style="margin-bottom:14px">
+                <label class="flabel">Peruntukan</label>
+                <!-- Menambahkan ID "zis-peruntukan" di sini -->
+                <select class="fselect" id="zis-peruntukan">
+                  <option>Fakir & Miskin (Umum)</option>
+                  <option>Program Pendidikan Anak Yatim</option>
+                  <option>Bantuan Bencana</option>
+                  <option>Ibnu Sabil</option>
+                  <option>Pemberdayaan Muallaf</option>
+                </select>
+              </div>
+
+              <div style="border:1.5px solid var(--border);border-radius:var(--radius-md);padding:14px 16px;background:var(--sand-100);font-size:12.5px;margin-bottom:16px;line-height:1.7">
+                <div style="font-weight:700;color:var(--ink);margin-bottom:4px">Niat Zakat Maal:</div>
+                <div style="font-family:'Amiri',serif;font-size:16px;color:var(--teal-900);text-align:center;margin:6px 0">نَوَيْتُ أَنْ أُخْرِجَ زَكَاةَ مَالِي</div>
+                <div style="color:var(--ink-soft);font-size:12px;text-align:center;font-style:italic">"Saya niat mengeluarkan zakat hartaku..."</div>
+              </div>
+
+              <!-- Mengganti onclick menjadi prosesZis() -->
+              <button class="btn-saffron" style="width:100%;justify-content:center" onclick="prosesZis()">
+                🤲 Konfirmasi & Bayar ZIS
+              </button>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <!-- Statistik ZIS -->
+            <div class="card">
+              <div class="card-head"><div class="card-title">ZIS Saya</div></div>
+              <div class="card-body" style="padding:16px 20px">
+                <div style="display:flex;flex-direction:column;gap:10px">
+                  <div style="display:flex;justify-content:space-between;align-items:center">
+                    <span style="font-size:12px;color:var(--ink-soft)">Total ZIS tahun ini</span>
+                    <span style="font-size:14px;font-weight:700;color:var(--saffron)">Rp 2.150.000</span>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;align-items:center">
+                    <span style="font-size:12px;color:var(--ink-soft)">Zakat Maal</span>
+                    <span style="font-size:13px;font-weight:600">Rp 1.200.000</span>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;align-items:center">
+                    <span style="font-size:12px;color:var(--ink-soft)">Infaq & Sedekah</span>
+                    <span style="font-size:13px;font-weight:600">Rp 750.000</span>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;align-items:center">
+                    <span style="font-size:12px;color:var(--ink-soft)">Zakat Fitrah</span>
+                    <span style="font-size:13px;font-weight:600">Rp 200.000</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dampak Nyata -->
+            <div class="bagi-card" style="background:linear-gradient(135deg,var(--saffron),#b8720a)">
+              <div class="bagi-lbl">Dampak ZIS Anda</div>
+              <div style="display:flex;flex-direction:column;gap:8px;margin-top:10px">
+                <div style="display:flex;align-items:center;gap:8px;font-size:12.5px">
+                  <span>📚</span>
+                  <span>3 anak yatim terbantu pendidikan</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;font-size:12.5px">
+                  <span>🍱</span>
+                  <span>12 keluarga menerima paket sembako</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;font-size:12.5px">
+                  <span>💊</span>
+                  <span>2 pasien dibantu biaya pengobatan</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab: Wakaf -->
+      <div id="tab-wakaf" style="display:none">
+        <div class="zis-form-wrap">
+          <div>
+            <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:12px">Pilih Program Wakaf</div>
+            <div class="wakaf-programs">
+              <div class="wp-item selected-prog" onclick="selectWakafProg(this)">
+                <div class="wp-head">
+                  <div class="wp-name">Beasiswa Mahasiswa Berprestasi</div>
+                  <span class="wp-cat pend">Pendidikan</span>
+                </div>
+                <div class="wp-progress"><div class="wp-fill" style="width:86%"></div></div>
+                <div class="wp-meta"><span>Rp 215 jt terkumpul dari Rp 250 jt</span><span style="font-weight:700;color:var(--teal-700)">86%</span></div>
+              </div>
+              <div class="wp-item" onclick="selectWakafProg(this)">
+                <div class="wp-head">
+                  <div class="wp-name">Modal Usaha Mikro Alumni UIN</div>
+                  <span class="wp-cat ekon">Ekonomi</span>
+                </div>
+                <div class="wp-progress"><div class="wp-fill" style="width:97%"></div></div>
+                <div class="wp-meta"><span>Rp 195 jt terkumpul dari Rp 200 jt</span><span style="font-weight:700;color:var(--saffron)">97% 🎉</span></div>
+              </div>
+              <div class="wp-item" onclick="selectWakafProg(this)">
+                <div class="wp-head">
+                  <div class="wp-name">Klinik Kesehatan Gratis Ciputat</div>
+                  <span class="wp-cat sehat">Kesehatan</span>
+                </div>
+                <div class="wp-progress"><div class="wp-fill" style="width:59%"></div></div>
+                <div class="wp-meta"><span>Rp 178 jt terkumpul dari Rp 300 jt</span><span style="font-weight:700;color:var(--teal-700)">59%</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head"><div class="card-title">Ikrar Wakaf Digital</div></div>
+            <div class="card-body">
+              <div style="background:var(--teal-100);border-radius:var(--radius-md);padding:14px 16px;margin-bottom:16px">
+                <div style="font-size:10.5px;font-weight:700;color:var(--teal-700);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">Program Dipilih:</div>
+                <div style="font-size:13.5px;font-weight:700;color:var(--teal-900)" id="selected-wakaf-prog">Beasiswa Mahasiswa Berprestasi</div>
+              </div>
+
+              <div class="fg" style="margin-bottom:14px">
+                <label class="flabel">Nominal Wakaf (Rp)</label>
+                <input class="finput" type="number" placeholder="Minimum Rp 10.000" id="wakaf-nominal">
+                <div class="nominal-presets" style="margin-top:8px">
+                  <button class="preset-btn" onclick="setPresetWakaf(this,'50000')">Rp 50rb</button>
+                  <button class="preset-btn" onclick="setPresetWakaf(this,'100000')">Rp 100rb</button>
+                  <button class="preset-btn" onclick="setPresetWakaf(this,'500000')">Rp 500rb</button>
+                  <button class="preset-btn" onclick="setPresetWakaf(this,'1000000')">Rp 1 juta</button>
+                </div>
+              </div>
+
+              <div style="border:1.5px solid var(--border);border-radius:var(--radius-md);padding:14px 16px;background:var(--sand-100);font-size:12.5px;margin-bottom:16px;line-height:1.7">
+                <div style="font-weight:700;color:var(--ink);margin-bottom:6px">Ikrar Wakaf Uang:</div>
+                <div style="font-family:'Amiri',serif;font-size:15px;color:var(--teal-900);text-align:center;margin:6px 0">وَقَفْتُ هَذَا الْمَالَ لِوَجْهِ اللهِ تَعَالَى</div>
+                <div style="color:var(--ink-soft);font-size:12px;line-height:1.6;margin-top:6px">
+                  "Saya, <strong>Musyaffa Abdullah</strong>, mewakafkan uang ini karena Allah Ta'ala kepada BMT Syahidah IKALUIN sebagai nazhir, untuk program <strong id="ikrar-prog">Beasiswa Mahasiswa</strong>, dan tidak dapat ditarik kembali."
+                </div>
+              </div>
+
+              <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:14px">
+                <input type="checkbox" id="ikrar-check" style="margin-top:3px;accent-color:var(--teal-700)">
+                <label for="ikrar-check" style="font-size:12px;color:var(--ink-mid);line-height:1.5;cursor:pointer">Saya telah membaca dan menyetujui ikrar wakaf di atas dengan penuh kesadaran dan keikhlasan.</label>
+              </div>
+
+              <button class="btn-saffron" style="width:100%;justify-content:center" onclick="prosesWakaf()">
+                🌿 Lanjut ke Pembayaran Wakaf
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab: Riwayat -->
+      <div id="tab-riwayat" style="display:none">
+        <div class="card">
+          <div class="card-head">
+            <div><div class="card-title">Riwayat ZIS & Wakaf Saya</div><div class="card-sub">Seluruh donasi yang pernah disalurkan</div></div>
+            <button class="btn-outline" style="font-size:11.5px;padding:7px 14px" onclick="toast('📥 Riwayat donasi dikirim ke email Anda!')">📥 Unduh Bukti</button>
+          </div>
+          <div class="card-body">
+            <div class="zis-riwayat">
+              <div class="zr-item">
+                <div class="zr-ico" style="background:rgba(29,138,120,0.1)">🌿</div>
+                <div class="zr-info"><div class="zr-name">Wakaf — Beasiswa Mahasiswa</div><div class="zr-date">15 Apr 2026 · Sertifikat Wakaf diterbitkan</div></div>
+                <div class="zr-amount">Rp 500.000</div>
+              </div>
+              <div class="zr-item">
+                <div class="zr-ico" style="background:rgba(212,134,10,0.1)">⭐</div>
+                <div class="zr-info"><div class="zr-name">Zakat Maal 2025/2026</div><div class="zr-date">10 Mar 2026 · Kuitansi ZIS-2026-0312</div></div>
+                <div class="zr-amount">Rp 1.200.000</div>
+              </div>
+              <div class="zr-item">
+                <div class="zr-ico" style="background:rgba(59,130,246,0.1)">💙</div>
+                <div class="zr-info"><div class="zr-name">Infaq Rutin Februari</div><div class="zr-date">01 Feb 2026 · Kuitansi ZIS-2026-0089</div></div>
+                <div class="zr-amount">Rp 150.000</div>
+              </div>
+              <div class="zr-item">
+                <div class="zr-ico" style="background:rgba(212,134,10,0.1)">⭐</div>
+                <div class="zr-info"><div class="zr-name">Zakat Fitrah 1446 H</div><div class="zr-date">28 Mar 2025 · Kuitansi ZIS-2025-1102</div></div>
+                <div class="zr-amount">Rp 200.000</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /ziswakaf -->
+
+    <!-- ════ PAGE: PROFIL ════ -->
+    <div class="page" id="page-profil">
+
+      <!-- Hero -->
+      <div class="profil-hero">
+        <div class="profil-av">MA</div>
+        <div class="profil-info">
+          <div class="profil-name">Musyaffa Abdullah</div>
+          <div class="profil-no">BMT-2024-0029 · Anggota sejak Maret 2024</div>
+          <div class="profil-tags">
+            <span class="profil-tag">Alumni UIN</span>
+            <span class="profil-tag">S.E. Perbankan Syariah</span>
+            <span class="profil-tag">Rekening Aktif</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="profil-grid">
+
+        <!-- Data Diri -->
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">Data Pribadi</div>
+            <span class="card-link" onclick="toast('✏️ Mode edit data diri diaktifkan.')">Edit</span>
+          </div>
+          <div class="card-body" style="padding:0 22px">
+            <div class="info-list">
+              <div class="info-row"><span class="info-label">Nama Lengkap</span><span class="info-value">Musyaffa Abdullah, S.E.</span></div>
+              <div class="info-row"><span class="info-label">NIK</span><span class="info-value" style="font-family:'DM Mono',monospace;font-size:12px">3674xxxx xxxx xxxx</span></div>
+              <div class="info-row"><span class="info-label">Nomor HP</span><span class="info-value">+62 812 xxxx 0029</span></div>
+              <div class="info-row"><span class="info-label">Email</span><span class="info-value">musyaffa@alumni.uinjkt.ac.id</span></div>
+              <div class="info-row"><span class="info-label">Alamat</span><span class="info-value">Jl. Ir. H. Juanda No. 95, Ciputat</span></div>
+              <div class="info-row"><span class="info-label">Status</span><span class="info-value">Alumni UIN Syarif Hidayatullah Jakarta</span></div>
+              <div class="info-row"><span class="info-label">Angkatan</span><span class="info-value">2019 · Perbankan Syariah</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Portofolio -->
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div class="card">
+            <div class="card-head"><div class="card-title">Portofolio Keuangan</div></div>
+            <div class="card-body">
+              <div class="ring-section">
+                <div class="ring-wrap">
+                  <svg class="ring-svg" width="120" height="120" viewBox="0 0 120 120">
+                    <circle cx="60" cy="60" r="46" fill="none" stroke="#e0d8c8" stroke-width="18"/>
+                    <circle cx="60" cy="60" r="46" fill="none" stroke="#145e53" stroke-width="18"
+                      stroke-dasharray="181.3" stroke-dashoffset="65"
+                      style="transform:rotate(-90deg);transform-origin:60px 60px"/>
+                    <circle cx="60" cy="60" r="46" fill="none" stroke="#d4860a" stroke-width="18"
+                      stroke-dasharray="60" stroke-dashoffset="-116.3"
+                      style="transform:rotate(-90deg);transform-origin:60px 60px"/>
+                    <circle cx="60" cy="60" r="46" fill="none" stroke="#3b82f6" stroke-width="18"
+                      stroke-dasharray="47.1" stroke-dashoffset="-176.3"
+                      style="transform:rotate(-90deg);transform-origin:60px 60px"/>
+                    <text x="60" y="56" text-anchor="middle" style="font-size:9px;fill:#6b7280;font-family:'DM Sans',sans-serif">Total</text>
+                    <text x="60" y="70" text-anchor="middle" style="font-size:11px;font-weight:700;fill:#111827;font-family:'DM Sans',sans-serif">10,2 jt</text>
+                  </svg>
+                  <div class="ring-legend-v">
+                    <div class="rl-item">
+                      <div class="rl-dot" style="background:#145e53"></div>
+                      <span class="rl-label">Simpanan</span>
+                      <span class="rl-val">Rp 7,2 jt</span>
+                    </div>
+                    <div class="rl-item">
+                      <div class="rl-dot" style="background:#d4860a"></div>
+                      <span class="rl-label">Pembiayaan</span>
+                      <span class="rl-val">Rp 1,9 jt</span>
+                    </div>
+                    <div class="rl-item">
+                      <div class="rl-dot" style="background:#3b82f6"></div>
+                      <span class="rl-label">ZIS & Wakaf</span>
+                      <span class="rl-val">Rp 1,1 jt</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head"><div class="card-title">Keamanan Akun</div></div>
+            <div class="card-body">
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <button class="btn-outline" style="width:100%;justify-content:flex-start;text-align:left" onclick="toast('🔐 Halaman ganti kata sandi dibuka!')">🔐 Ganti Kata Sandi</button>
+                <button class="btn-outline" style="width:100%;justify-content:flex-start;text-align:left" onclick="toast('📱 Pengaturan OTP dibuka!')">📱 Pengaturan OTP / PIN</button>
+                <button class="btn-outline" style="width:100%;justify-content:flex-start;text-align:left;color:#ef4444;border-color:rgba(239,68,68,0.3)" onclick="toast('👋 Anda berhasil keluar dari akun.')">🚪 Keluar dari Akun</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- /profil -->
+
+  </div><!-- /main -->
+</div><!-- /shell -->
+
+<!-- ════ MODALS ════ -->
+
+<!-- Modal: Virtual Account -->
+<div class="modal-overlay" id="modal-va">
+  <div class="modal" style="text-align:center">
+    <div style="font-size:36px;margin-bottom:10px">🏦</div>
+    <div class="modal-title">Virtual Account Setoran</div>
+    <div class="modal-sub">Transfer ke nomor VA berikut untuk menyelesaikan setoran Simpanan Syahida Anda</div>
+    <div style="background:var(--sand-100);border:1.5px dashed var(--teal-300);border-radius:var(--radius-md);padding:20px;margin:10px 0 18px">
+      <div style="font-size:11px;font-weight:600;color:var(--ink-soft);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:8px">Nomor Virtual Account</div>
+      <div style="font-family:'DM Mono',monospace;font-size:24px;font-weight:700;color:var(--teal-900);letter-spacing:3px">1234 5678 9012</div>
+      <div style="font-size:11.5px;color:var(--ink-soft);margin-top:6px">Bank BRI Syariah · a.n. BMT Syahidah IKALUIN</div>
+    </div>
+    <div style="font-size:11.5px;color:var(--ink-soft);line-height:1.6;margin-bottom:4px">⏳ VA aktif selama <strong>24 jam</strong>. Saldo akan otomatis diperbarui setelah transfer berhasil.</div>
+    <div class="modal-actions" style="justify-content:center">
+      <button class="btn-primary" onclick="closeModal('modal-va');toast('📋 Nomor VA disalin ke clipboard!')">Salin Nomor VA</button>
+      <button class="btn-outline" onclick="closeModal('modal-va')">Tutup</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: OTP -->
+<div class="modal-overlay" id="modal-otp">
+  <div class="modal" style="text-align:center">
+    <div style="font-size:36px;margin-bottom:10px">📱</div>
+    <div class="modal-title">Verifikasi OTP</div>
+    <div class="modal-sub">Kode OTP 6 digit telah dikirim ke nomor <strong>+62 812 xxxx 0029</strong>. Masukkan kode untuk melanjutkan penarikan.</div>
+    <div class="otp-wrap">
+      <input class="otp-digit" maxlength="1" type="text" oninput="moveOtp(this)">
+      <input class="otp-digit" maxlength="1" type="text" oninput="moveOtp(this)">
+      <input class="otp-digit" maxlength="1" type="text" oninput="moveOtp(this)">
+      <input class="otp-digit" maxlength="1" type="text" oninput="moveOtp(this)">
+      <input class="otp-digit" maxlength="1" type="text" oninput="moveOtp(this)">
+      <input class="otp-digit" maxlength="1" type="text" oninput="moveOtp(this)">
+    </div>
+    <div style="font-size:11.5px;color:var(--ink-soft);margin-bottom:4px">Tidak menerima kode? <span style="color:var(--teal-500);cursor:pointer;font-weight:600" onclick="toast('📲 Kode OTP baru telah dikirim ulang!')">Kirim ulang</span></div>
+    <div class="modal-actions" style="justify-content:center;margin-top:14px">
+      <button class="btn-primary" onclick="closeModal('modal-otp');toast('✅ Penarikan berhasil! Dana akan masuk dalam 1x24 jam.')">Konfirmasi Penarikan</button>
+      <button class="btn-outline" onclick="closeModal('modal-otp')">Batal</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Bayar Angsuran -->
+<div class="modal-overlay" id="modal-bayar">
+  <div class="modal">
+    <div class="modal-title">Bayar Angsuran ke-15</div>
+    <div class="modal-sub">Murabahah Peralatan Usaha · ID: PBY-2024-0291</div>
+    <div style="background:var(--sand-100);border-radius:var(--radius-md);padding:16px;margin-bottom:18px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <span style="font-size:12px;color:var(--ink-soft)">Pokok angsuran</span>
+        <span style="font-size:13px;font-weight:600">Rp 1.041.667</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <span style="font-size:12px;color:var(--ink-soft)">Margin</span>
+        <span style="font-size:13px;font-weight:600">Rp 208.333</span>
+      </div>
+      <div style="border-top:1px solid var(--border);padding-top:10px;display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:13px;font-weight:700">Total Bayar</span>
+        <span style="font-size:18px;font-weight:700;color:var(--teal-900)">Rp 1.250.000</span>
+      </div>
+    </div>
+    <div class="fg" style="margin-bottom:14px">
+      <label class="flabel">Metode Pembayaran</label>
+      <select class="fselect">
+        <option>Transfer Bank (Virtual Account)</option>
+        <option>Debet dari Simpanan Syahida</option>
+        <option>Bayar di Kantor</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-saffron" onclick="closeModal('modal-bayar');toast('✅ Pembayaran angsuran berhasil! E-receipt dikirim ke email Anda.')">Bayar Sekarang</button>
+      <button class="btn-outline" onclick="closeModal('modal-bayar')">Batal</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Konfirmasi ZIS -->
+<div class="modal-overlay" id="modal-konfirmasi-zis">
+  <div class="modal" style="text-align:center">
+    <div style="font-size:40px;margin-bottom:8px">⭐</div>
+    <div class="modal-title">Konfirmasi ZIS</div>
+    <div class="modal-sub">Pastikan nominal dan niat ZIS Anda sudah benar sebelum melanjutkan.</div>
+    <div style="background:var(--saffron-pale);border:1px solid rgba(212,134,10,0.2);border-radius:var(--radius-md);padding:16px;margin:12px 0 18px;text-align:left">
+      <!-- MENGGUNAKAN ID UNTUK UPDATE DINAMIS -->
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:12px;color:var(--ink-soft)">Jenis</span><span style="font-size:12.5px;font-weight:600" id="konfirmasi-zis-jenis">Zakat Maal</span></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:12px;color:var(--ink-soft)">Peruntukan</span><span style="font-size:12.5px;font-weight:600" id="konfirmasi-zis-peruntukan">Fakir & Miskin</span></div>
+      <div style="display:flex;justify-content:space-between"><span style="font-size:12px;color:var(--ink-soft)">Nominal</span><span style="font-size:15px;font-weight:700;color:var(--saffron)" id="konfirmasi-zis-nominal">Rp 500.000</span></div>
+    </div>
+    <div class="modal-actions" style="justify-content:center">
+      <button class="btn-saffron" onclick="closeModal('modal-konfirmasi-zis');toast('🤲 ZIS berhasil tersalurkan! Kuitansi digital dikirim ke email Anda. Jazakumullahu khairan.')">🤲 Ya, Salurkan ZIS</button>
+      <button class="btn-outline" onclick="closeModal('modal-konfirmasi-zis')">Batal</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Wakaf OTP -->
+<div class="modal-overlay" id="modal-wakaf-otp">
+  <div class="modal" style="text-align:center">
+    <div style="font-size:36px;margin-bottom:8px">🌿</div>
+    <div class="modal-title">Tanda Tangan Ikrar Wakaf</div>
+    <div class="modal-sub">Masukkan kode OTP yang dikirim ke HP Anda untuk mengesahkan ikrar wakaf digital ini.</div>
+    <div class="otp-wrap">
+      <input class="otp-digit" maxlength="1" type="text" oninput="moveOtp(this)">
+      <input class="otp-digit" maxlength="1" type="text" oninput="moveOtp(this)">
+      <input class="otp-digit" maxlength="1" type="text" oninput="moveOtp(this)">
+      <input class="otp-digit" maxlength="1" type="text" oninput="moveOtp(this)">
+      <input class="otp-digit" maxlength="1" type="text" oninput="moveOtp(this)">
+      <input class="otp-digit" maxlength="1" type="text" oninput="moveOtp(this)">
+    </div>
+    <div class="modal-actions" style="justify-content:center;margin-top:14px">
+      <button class="btn-saffron" onclick="closeModal('modal-wakaf-otp');openModal('modal-wakaf-cert')">Sahkan Ikrar Wakaf</button>
+      <button class="btn-outline" onclick="closeModal('modal-wakaf-otp')">Batal</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Sertifikat Wakaf -->
+<div class="modal-overlay" id="modal-wakaf-cert">
+  <div class="modal" style="text-align:center">
+    <div style="font-size:44px;margin-bottom:6px">🌿</div>
+    <div style="font-family:'Amiri',serif;font-size:18px;color:var(--teal-700);margin-bottom:8px">شَهَادَةُ الْوَقْفِ</div>
+    <div class="modal-title">Sertifikat Wakaf Digital</div>
+    <div style="background:linear-gradient(135deg,var(--sand-100),var(--teal-100));border:2px solid var(--teal-300);border-radius:var(--radius-lg);padding:20px;margin:14px 0;text-align:left">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-size:11.5px;color:var(--ink-soft)">No. Sertifikat</span><span style="font-family:'DM Mono',monospace;font-size:12px;font-weight:700">WKF-2026-0312</span></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-size:11.5px;color:var(--ink-soft)">Wakif</span><span style="font-size:12.5px;font-weight:700">Musyaffa Abdullah</span></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-size:11.5px;color:var(--ink-soft)">Program</span><span style="font-size:12.5px;font-weight:700" id="cert-prog">Beasiswa Mahasiswa</span></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-size:11.5px;color:var(--ink-soft)">Nominal</span><span style="font-size:14px;font-weight:700;color:var(--saffron)" id="cert-nominal">Rp 500.000</span></div>
+      <div style="display:flex;justify-content:space-between"><span style="font-size:11.5px;color:var(--ink-soft)">Tanggal</span><span style="font-size:12px">16 Mei 2026, 10:47 WIB</span></div>
+    </div>
+    <div style="font-size:12px;color:var(--ink-soft);line-height:1.6;margin-bottom:4px">Sertifikat ini dikirim ke email Anda. Nazhir akan memperbarui perkembangan program secara berkala.</div>
+    <div class="modal-actions" style="justify-content:center;margin-top:14px">
+      <button class="btn-primary" onclick="closeModal('modal-wakaf-cert');toast('📥 Sertifikat wakaf PDF diunduh!')">📥 Unduh Sertifikat PDF</button>
+      <button class="btn-outline" onclick="closeModal('modal-wakaf-cert')">Selesai</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast-el"></div>
+
+<script>
+/* ── THEME TOGGLE ── */
+function toggleTheme() {
+  const isDark = document.body.classList.toggle('dark-mode');
+  const btn = document.getElementById('theme-toggle');
+  btn.textContent = isDark ? '☀️' : '🌙';
+  localStorage.setItem('bmt_theme', isDark ? 'dark' : 'light');
+}
+
+/* ── NAV ── */
+function goPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b => {
+    if (b.getAttribute('onclick') && b.getAttribute('onclick').includes("'" + id + "'")) b.classList.add('active');
+  });
+}
+
+/* ── SALDO HIDE/SHOW ── */
+let hidden = false;
+function toggleHide() {
+  hidden = !hidden;
+  const el = document.getElementById('saldo-val');
+  el.textContent = hidden ? '••••••••' : '7.240.500';
+  document.getElementById('eye-btn').textContent = hidden ? '🙈' : '👁';
+}
+
+function selectPill(el, name, val) {
+  document.querySelectorAll('.saldo-pill').forEach(p => p.classList.remove('active-pill'));
+  el.classList.add('active-pill');
+}
+
+/* ── PRODUCT SELECT ── */
+function selectProd(el) {
+  document.querySelectorAll('.prod-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+/* ── AKAD ANGGOTA ── */
+function selectAkadAnggota(el, nama) {
+  document.querySelectorAll('#page-pembiayaan .prod-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('new-pb-title').textContent = 'Formulir Pengajuan — ' + nama;
+  document.getElementById('akad-select').value = nama;
+}
+
+/* ── SIMULASI ── */
+function hitungSimulasi() {
+  const n = parseFloat(document.getElementById('pb-nominal').value) || 0;
+  const t = parseFloat(document.getElementById('pb-tenor').value) || 12;
+  const box = document.getElementById('sim-box');
+  if (n > 0) {
+    box.style.display = 'block';
+    const margin = n * 0.03 * (t/12);
+    const angs = (n + margin) / t;
+    document.getElementById('s-pokok').textContent = 'Rp ' + fmt(n);
+    document.getElementById('s-margin').textContent = 'Rp ' + fmt(margin);
+    document.getElementById('s-angs').textContent = 'Rp ' + fmt(angs) + '/bln';
+  } else {
+    box.style.display = 'none';
+  }
+}
+function fmt(n) {
+  if (n >= 1e6) return (n/1e6).toFixed(2) + ' jt';
+  if (n >= 1e3) return (n/1e3).toFixed(0) + ' rb';
+  return n.toFixed(0);
+}
+
+/* ── DONASI TABS ── */
+function switchDonasi(el, tabId) {
+  document.querySelectorAll('.donasi-tabs .dtab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  ['tab-zis','tab-wakaf','tab-riwayat'].forEach(id => {
+    document.getElementById(id).style.display = (id === tabId) ? 'block' : 'none';
+  });
+}
+
+/* ── ZIS TYPE ── */
+function switchZisType(el) {
+  document.querySelectorAll('#zis-type-tabs .ptab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+/* ── PRESET ── */
+function setPreset(btn, val) {
+  document.querySelectorAll('.nominal-presets .preset-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  if (val !== 'custom') document.getElementById('zis-nominal').value = val;
+}
+function setPresetWakaf(btn, val) {
+  btn.closest('.nominal-presets').querySelectorAll('.preset-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  document.getElementById('wakaf-nominal').value = val;
+}
+
+/* ── WAKAF PROGRAM SELECT ── */
+function selectWakafProg(el) {
+  document.querySelectorAll('.wp-item').forEach(w => w.classList.remove('selected-prog'));
+  el.classList.add('selected-prog');
+  const name = el.querySelector('.wp-name').textContent;
+  document.getElementById('selected-wakaf-prog').textContent = name;
+  document.getElementById('ikrar-prog').textContent = name.substring(0,24) + (name.length>24?'…':'');
+  document.getElementById('cert-prog').textContent = name.substring(0,20) + (name.length>20?'…':'');
+}
+
+/* ── FUNGSI BARU UNTUK PROSES ZIS ── */
+function prosesZis() {
+  const nominal = document.getElementById('zis-nominal').value;
+  
+  // Validasi input nominal
+  if (!nominal || parseInt(nominal) < 10000) { 
+    toast('⚠️ Masukkan nominal ZIS minimal Rp 10.000.'); 
+    return; 
+  }
+  
+  // Mengambil jenis ZIS dari tab yang sedang aktif
+  const jenis = document.querySelector('#zis-type-tabs .ptab.active').textContent;
+  
+  // Mengambil opsi peruntukan
+  const peruntukan = document.getElementById('zis-peruntukan').value;
+
+  // Menyuntikkan data ke dalam elemen Modal
+  document.getElementById('konfirmasi-zis-jenis').textContent = jenis;
+  document.getElementById('konfirmasi-zis-peruntukan').textContent = peruntukan;
+  document.getElementById('konfirmasi-zis-nominal').textContent = 'Rp ' + parseInt(nominal).toLocaleString('id-ID');
+
+  // Menampilkan Modal setelah data disuntikkan
+  openModal('modal-konfirmasi-zis');
+}
+
+function prosesWakaf() {
+  const check = document.getElementById('ikrar-check');
+  if (!check.checked) { toast('⚠️ Centang persetujuan ikrar wakaf terlebih dahulu.'); return; }
+  const nominal = document.getElementById('wakaf-nominal').value;
+  if (!nominal || parseInt(nominal) < 10000) { toast('⚠️ Masukkan nominal wakaf minimal Rp 10.000.'); return; }
+  document.getElementById('cert-nominal').textContent = 'Rp ' + parseInt(nominal).toLocaleString('id-ID');
+  openModal('modal-wakaf-otp');
+}
+
+/* ── MODAL ── */
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-overlay').forEach(o => {
+  o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); });
+});
+
+/* ── OTP INPUT FLOW ── */
+function moveOtp(el) {
+  if (el.value.length === 1) {
+    const inputs = el.closest('.otp-wrap').querySelectorAll('.otp-digit');
+    const idx = Array.from(inputs).indexOf(el);
+    if (idx < inputs.length - 1) inputs[idx + 1].focus();
+  }
+}
+
+/* ── TOAST ── */
+let toastT;
+function toast(msg) {
+  const el = document.getElementById('toast-el');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastT);
+  toastT = setTimeout(() => el.classList.remove('show'), 3500);
+}
+
+/* ── INISIALISASI (Progress Bar & Tema) ── */
+window.addEventListener('DOMContentLoaded', () => {
+  // Cek Tema yang tersimpan
+  const savedTheme = localStorage.getItem('bmt_theme');
+  if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    document.body.classList.add('dark-mode');
+    document.getElementById('theme-toggle').textContent = '☀️';
+  }
+
+  // Animasi Progress Bar
+  setTimeout(() => {
+    document.querySelectorAll('[class*="-fill"]').forEach(el => {
+      const w = el.style.width;
+      el.style.transition = 'none';
+      el.style.width = '0';
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          el.style.transition = 'width 1.2s cubic-bezier(0.4,0,0.2,1)';
+          el.style.width = w;
+        });
+      });
+    });
+  }, 200);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BMT Syahidah IKALUIN — Koperasi Syariah Modern</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ════════════════════════════════════════
+   DESIGN TOKENS & BASE
+════════════════════════════════════════ */
+:root {
+  --teal-950: #071f1c;
+  --teal-900: #0c3b35;
+  --teal-700: #145e53;
+  --teal-500: #1d8a78;
+  --teal-300: #4db8a5;
+  --teal-100: #d4f0eb;
+  --teal-50:  #edf9f7;
+  --gold:     #c9953a;
+  --gold-light:#e8b96a;
+  --gold-pale:#fef3dc;
+  --cream:    #faf7f2;
+  --cream-d:  #f0ebe0;
+  --sand:     #e0d8c8;
+  --white:    #ffffff;
+  --ink:      #111827;
+  --ink-mid:  #374151;
+  --muted:    #6b7280;
+  --faint:    #9ca3af;
+  --border:   rgba(20,94,83,0.13);
+  --radius-xl: 20px;
+  --radius-lg: 16px;
+  --radius-md: 10px;
+  --shadow-sm: 0 4px 12px rgba(12,59,53,0.05);
+  --shadow-lg: 0 12px 36px rgba(12,59,53,0.12);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+a { text-decoration: none; color: inherit; }
+
+/* ════════ NAVIGATION ════════ */
+.navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  background: rgba(250, 247, 242, 0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  z-index: 1000;
+  padding: 16px 0;
+  transition: all 0.3s ease;
+}
+.navbar.scrolled {
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: var(--shadow-sm);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.nav-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-icon {
+  width: 44px; height: 44px;
+  background: var(--teal-900);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Amiri', serif;
+  font-size: 20px; color: var(--gold-light);
+}
+
+.logo-text {
+  display: flex; flex-direction: column;
+}
+.logo-title {
+  font-size: 16px; font-weight: 800; color: var(--teal-900); line-height: 1.1;
+}
+.logo-sub {
+  font-size: 10.5px; color: var(--muted); font-weight: 600; letter-spacing: 0.5px;
+}
+
+.nav-links {
+  display: flex; gap: 32px; align-items: center;
+}
+.nav-link {
+  font-size: 14px; font-weight: 600; color: var(--ink-mid);
+  transition: color 0.2s;
+}
+.nav-link:hover { color: var(--teal-700); }
+
+.nav-actions { display: flex; gap: 12px; align-items: center; }
+
+/* Buttons */
+.btn {
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  font-family: inherit; font-size: 14px; font-weight: 700;
+  cursor: pointer; transition: all 0.2s;
+  display: inline-flex; align-items: center; gap: 8px;
+  border: none;
+}
+.btn-outline {
+  background: transparent; color: var(--teal-900);
+  border: 1.5px solid var(--teal-300);
+}
+.btn-outline:hover { background: var(--teal-50); border-color: var(--teal-500); }
+.btn-primary {
+  background: var(--teal-900); color: #fff;
+}
+.btn-primary:hover { background: var(--teal-700); transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+.btn-gold {
+  background: var(--gold); color: #fff;
+}
+.btn-gold:hover { background: #b8720a; transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+
+/* ════════ HERO SECTION ════════ */
+.hero {
+  padding: 160px 0 100px;
+  background: linear-gradient(135deg, var(--teal-950) 0%, var(--teal-900) 100%);
+  position: relative;
+  overflow: hidden;
+  color: #fff;
+}
+
+/* Islamic Geometric & Calligraphy Accents */
+.hero::before {
+  content: '';
+  position: absolute; right: -100px; top: -50px;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(201,149,58,0.15) 0%, transparent 70%);
+  border-radius: 50%; pointer-events: none;
+}
+.hero::after {
+  content: 'بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم';
+  font-family: 'Amiri', serif;
+  font-size: 120px; color: rgba(255,255,255,0.03);
+  position: absolute; left: -20px; bottom: 20px;
+  white-space: nowrap; pointer-events: none;
+}
+
+.hero-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  position: relative; z-index: 10;
+}
+
+.hero-tag {
+  display: inline-block;
+  padding: 6px 14px;
+  background: rgba(201,149,58,0.15);
+  border: 1px solid rgba(201,149,58,0.3);
+  color: var(--gold-light);
+  font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+  border-radius: 20px; margin-bottom: 24px;
+}
+
+.hero-title {
+  font-size: 48px; font-weight: 800; line-height: 1.15;
+  margin-bottom: 20px; letter-spacing: -1px;
+}
+.hero-title span { color: var(--gold-light); }
+
+.hero-desc {
+  font-size: 16px; color: rgba(255,255,255,0.7);
+  line-height: 1.7; margin-bottom: 40px;
+  max-width: 480px;
+}
+
+/* Floating Card Graphic (matches portal style) */
+.hero-graphic {
+  position: relative;
+  perspective: 1000px;
+}
+.floating-card {
+  background: linear-gradient(135deg, var(--teal-700), #1a7a6a);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius-xl);
+  padding: 32px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.4);
+  transform: rotateY(-10deg) rotateX(5deg);
+  animation: float 6s ease-in-out infinite;
+  position: relative;
+  overflow: hidden;
+}
+.floating-card::after {
+  content: 'بَارَكَ اللهُ';
+  font-family: 'Amiri', serif; font-size: 64px; color: rgba(255,255,255,0.06);
+  position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
+}
+@keyframes float {
+  0%, 100% { transform: rotateY(-10deg) rotateX(5deg) translateY(0); }
+  50% { transform: rotateY(-10deg) rotateX(5deg) translateY(-20px); }
+}
+
+.fc-label { font-size: 12px; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+.fc-amount { font-size: 36px; font-weight: 800; margin-bottom: 24px; font-family: 'DM Mono', monospace; }
+.fc-amount span { font-size: 20px; opacity: 0.7; }
+.fc-pill-group { display: flex; gap: 10px; }
+.fc-pill {
+  background: rgba(255,255,255,0.1); padding: 8px 16px; border-radius: 8px;
+}
+.fc-pill-title { font-size: 10px; opacity: 0.7; }
+.fc-pill-val { font-size: 14px; font-weight: 700; margin-top: 2px; }
+
+/* ════════ STATS SECTION ════════ */
+.stats-section {
+  padding: 60px 0;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+}
+.stats-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px;
+  text-align: center;
+}
+.stat-item { position: relative; }
+.stat-item:not(:last-child)::after {
+  content: ''; position: absolute; right: -20px; top: 20%; bottom: 20%;
+  width: 1px; background: var(--border);
+}
+.stat-val { font-size: 36px; font-weight: 800; color: var(--teal-900); margin-bottom: 8px; font-family: 'DM Mono', monospace; }
+.stat-label { font-size: 14px; color: var(--muted); font-weight: 500; }
+
+/* ════════ FEATURES SECTION ════════ */
+.features {
+  padding: 100px 0;
+  background: var(--cream);
+}
+.section-header { text-align: center; margin-bottom: 60px; max-width: 600px; margin-left: auto; margin-right: auto; }
+.section-tag { font-size: 12px; font-weight: 700; color: var(--teal-500); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+.section-title { font-size: 32px; font-weight: 800; color: var(--ink); margin-bottom: 16px; }
+.section-desc { font-size: 15px; color: var(--muted); }
+
+.feature-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+}
+.feat-card {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 32px;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.feat-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--teal-300);
+  box-shadow: var(--shadow-lg);
+}
+.feat-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  background: linear-gradient(90deg, var(--teal-900), var(--teal-300));
+  opacity: 0; transition: opacity 0.3s;
+}
+.feat-card:hover::before { opacity: 1; }
+
+.feat-icon {
+  width: 64px; height: 64px; border-radius: 16px;
+  background: var(--teal-50);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 32px; margin-bottom: 24px;
+}
+.feat-title { font-size: 20px; font-weight: 800; color: var(--ink); margin-bottom: 12px; }
+.feat-desc { font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 24px; }
+.feat-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.feat-list li { font-size: 13px; color: var(--ink-mid); display: flex; align-items: center; gap: 8px; font-weight: 500; }
+.feat-list li::before { content: '✓'; color: var(--gold); font-weight: 700; }
+
+/* ════════ VALUE PROPOSITION ════════ */
+.value-prop {
+  padding: 100px 0;
+  background: var(--white);
+}
+.vp-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+}
+.vp-content h2 { font-size: 36px; font-weight: 800; margin-bottom: 20px; line-height: 1.2; }
+.vp-content p { font-size: 15px; color: var(--muted); margin-bottom: 32px; line-height: 1.7; }
+.vp-item { display: flex; gap: 16px; margin-bottom: 24px; }
+.vp-item-icon {
+  width: 48px; height: 48px; border-radius: 12px; flex-shrink: 0;
+  background: var(--gold-pale); color: var(--gold);
+  display: flex; align-items: center; justify-content: center; font-size: 20px;
+}
+.vp-item-text h4 { font-size: 16px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+.vp-item-text p { font-size: 13px; color: var(--muted); line-height: 1.5; margin: 0; }
+
+.vp-image-wrap { position: relative; }
+.vp-image-box {
+  background: var(--teal-100);
+  border-radius: var(--radius-xl);
+  height: 400px;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; position: relative;
+}
+.vp-image-box::after {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at center, transparent 30%, rgba(12,59,53,0.1) 100%);
+}
+.vp-app-mock {
+  width: 240px; height: 380px; background: var(--cream); border-radius: 20px 20px 0 0;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15); border: 8px solid #fff; border-bottom: none;
+  transform: translateY(20px); display: flex; flex-direction: column; padding: 16px;
+}
+.mock-head { height: 40px; background: var(--teal-900); border-radius: 10px; margin-bottom: 12px; }
+.mock-body { flex: 1; background: #fff; border-radius: 10px; border: 1px solid var(--border); padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+.mock-line { height: 10px; background: var(--cream-d); border-radius: 4px; }
+
+/* ════════ CTA BANNER ════════ */
+.cta-banner {
+  padding: 80px 0;
+  background: var(--cream);
+}
+.cta-box {
+  background: linear-gradient(135deg, var(--gold), #b8720a);
+  border-radius: var(--radius-xl);
+  padding: 60px 40px;
+  text-align: center; color: #fff;
+  position: relative; overflow: hidden;
+}
+.cta-box::before {
+  content: ''; position: absolute; top: -50px; left: -50px; width: 200px; height: 200px;
+  background: rgba(255,255,255,0.1); border-radius: 50%;
+}
+.cta-box h2 { font-size: 32px; font-weight: 800; margin-bottom: 16px; }
+.cta-box p { font-size: 16px; opacity: 0.9; margin-bottom: 32px; max-width: 500px; margin-left: auto; margin-right: auto; }
+
+/* ════════ FOOTER ════════ */
+.footer {
+  background: var(--teal-950);
+  color: rgba(255,255,255,0.7);
+  padding: 80px 0 40px;
+}
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; gap: 40px; margin-bottom: 60px; }
+.footer-brand { margin-bottom: 20px; color: #fff; font-size: 20px; font-weight: 800; }
+.footer-title { color: #fff; font-size: 14px; font-weight: 700; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.footer-links a { transition: color 0.2s; font-size: 14px; }
+.footer-links a:hover { color: var(--gold-light); }
+.footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 24px; display: flex; justify-content: space-between; font-size: 13px; }
+
+/* Responsive basics */
+@media (max-width: 992px) {
+  .hero-content, .vp-grid { grid-template-columns: 1fr; text-align: center; }
+  .hero-desc { margin-left: auto; margin-right: auto; }
+  .floating-card { max-width: 400px; margin: 0 auto; }
+  .hero::after { display: none; }
+  .feature-grid { grid-template-columns: repeat(2, 1fr); }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .stats-grid { grid-template-columns: 1fr; gap: 24px; }
+  .stat-item:not(:last-child)::after { display: none; }
+  .feature-grid { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .hero-title { font-size: 36px; }
+}
+</style>
+</head>
+<body>
+
+  <!-- ════ NAVBAR ════ -->
+  <nav class="navbar" id="navbar">
+    <div class="container nav-content">
+      <div class="logo-group">
+        <div class="logo-icon">م</div>
+        <div class="logo-text">
+          <span class="logo-title">BMT Syahidah</span>
+          <span class="logo-sub">Koperasi Syariah IKALUIN</span>
+        </div>
+      </div>
+      
+      <div class="nav-links">
+        <a href="#" class="nav-link">Beranda</a>
+        <a href="#layanan" class="nav-link">Layanan</a>
+        <a href="#tentang" class="nav-link">Tentang Kami</a>
+        <a href="#zis" class="nav-link">ZIS & Wakaf</a>
+      </div>
+
+      <div class="nav-actions">
+        <!-- Mengarah ke halaman login/portal anggota -->
+        <button class="btn btn-outline" onclick="window.location.href='login'">Masuk</button>
+        <!-- Mengarah ke halaman registrasi -->
+        <button class="btn btn-primary" onclick="window.location.href='registrasi'">Daftar Akun</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ════ HERO SECTION ════ -->
+  <section class="hero">
+    <div class="container hero-content">
+      <div>
+        <div class="hero-tag">BMT Syahidah IKALUIN</div>
+        <h1 class="hero-title">Koperasi Syariah Modern, Berkembang Bersama <span>Umat.</span></h1>
+        <p class="hero-desc">Bergabung dengan ekosistem keuangan syariah tepercaya untuk Alumni UIN Jakarta dan masyarakat umum. Kelola simpanan, pembiayaan, dan ZIS secara transparan dalam satu portal digital.</p>
+        <div style="display: flex; gap: 16px; justify-content: center; @media(min-width: 993px){ justify-content: flex-start; }">
+          <button class="btn btn-gold" onclick="window.location.href='syahida_registrasi.html'">Mulai Perjalanan Hijrah Finansial</button>
+        </div>
+      </div>
+
+      <div class="hero-graphic">
+        <div class="floating-card">
+          <div class="fc-label">Simpanan Syahida — Total Saldo</div>
+          <div class="fc-amount"><span>Rp</span> 7.240.500</div>
+          <div class="fc-pill-group">
+            <div class="fc-pill">
+              <div class="fc-pill-title">Estimasi Bagi Hasil</div>
+              <div class="fc-pill-val" style="color:var(--gold-light)">Rp 51.200</div>
+            </div>
+            <div class="fc-pill">
+              <div class="fc-pill-title">Status Rekening</div>
+              <div class="fc-pill-val" style="color:#d4f0eb">Aktif ✓</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ STATS SECTION ════ -->
+  <section class="stats-section">
+    <div class="container stats-grid">
+      <div class="stat-item">
+        <div class="stat-val">2.450+</div>
+        <div class="stat-label">Anggota Terdaftar</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-val">12,5 M</div>
+        <div class="stat-label">Total Aset Dikelola</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-val">1,8 M</div>
+        <div class="stat-label">ZIS & Wakaf Disalurkan</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ FEATURES / LAYANAN ════ -->
+  <section class="features" id="layanan">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Layanan Utama</div>
+        <h2 class="section-title">Satu Aplikasi, Ragam Solusi Syariah</h2>
+        <p class="section-desc">Pilih produk dan layanan yang sesuai dengan kebutuhan finansial Anda, sepenuhnya sesuai dengan prinsip syariah tanpa riba.</p>
+      </div>
+
+      <div class="feature-grid">
+        <!-- Simpanan -->
+        <div class="feat-card">
+          <div class="feat-icon" style="color: var(--teal-700)">💼</div>
+          <h3 class="feat-title">Simpanan & Investasi</h3>
+          <p class="feat-desc">Simpan dana Anda dengan aman atau investasikan untuk masa depan dengan prinsip Wadiah dan Mudharabah.</p>
+          <ul class="feat-list">
+            <li>Simpanan Syahida (Fleksibel)</li>
+            <li>Simpanan Pendidikan & Haji</li>
+            <li>Deposito Syariah (Bagi Hasil)</li>
+          </ul>
+        </div>
+
+        <!-- Pembiayaan -->
+        <div class="feat-card">
+          <div class="feat-icon" style="color: var(--gold)">🤝</div>
+          <h3 class="feat-title">Pembiayaan Produktif</h3>
+          <p class="feat-desc">Solusi modal usaha atau pembelian aset tanpa bunga, menggunakan akad Murabahah, Mudharabah, dan Musyarakah.</p>
+          <ul class="feat-list">
+            <li>Modal Usaha Mikro & Menengah</li>
+            <li>Pembiayaan Kendaraan & Properti</li>
+            <li>Angsuran Tetap & Transparan</li>
+          </ul>
+        </div>
+
+        <!-- ZIS & Wakaf -->
+        <div class="feat-card">
+          <div class="feat-icon" style="color: #3b82f6">🌿</div>
+          <h3 class="feat-title">ZIS & Wakaf Digital</h3>
+          <p class="feat-desc">Salurkan Zakat, Infaq, Sedekah, dan Wakaf produktif dengan mudah dan pantau laporan penyalurannya.</p>
+          <ul class="feat-list">
+            <li>Hitung & Bayar Zakat Maal</li>
+            <li>Wakaf Beasiswa & Kesehatan</li>
+            <li>Sertifikat Digital Otomatis</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ VALUE PROPOSITION ════ -->
+  <section class="value-prop" id="tentang">
+    <div class="container vp-grid">
+      <div class="vp-image-wrap">
+        <div class="vp-image-box">
+          <div class="vp-app-mock">
+            <div class="mock-head"></div>
+            <div class="mock-body">
+              <div class="mock-line" style="width: 40%"></div>
+              <div class="mock-line" style="width: 80%; height: 24px; margin-bottom: 10px"></div>
+              <div class="mock-line" style="width: 100%; height: 40px; background: rgba(212,134,10,0.2)"></div>
+              <div class="mock-line" style="width: 100%; height: 60px"></div>
+              <div class="mock-line" style="width: 100%; height: 60px"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="vp-content">
+        <div class="section-tag">Mengapa BMT Syahidah?</div>
+        <h2>Keuangan yang Adil, Transparan & Berkah</h2>
+        <p>BMT Syahidah IKALUIN didirikan dengan visi memberdayakan ekonomi umat, khususnya keluarga besar UIN Jakarta. Kami menggabungkan prinsip syariah murni dengan teknologi digital terkini.</p>
+        
+        <div class="vp-item">
+          <div class="vp-item-icon">⚖️</div>
+          <div class="vp-item-text">
+            <h4>100% Sesuai Syariah</h4>
+            <p>Seluruh operasional diawasi oleh Dewan Pengawas Syariah (DPS) untuk memastikan bebas riba, maysir, dan gharar.</p>
+          </div>
+        </div>
+        
+        <div class="vp-item">
+          <div class="vp-item-icon">📱</div>
+          <div class="vp-item-text">
+            <h4>Portal Digital Anggota</h4>
+            <p>Pantau mutasi, bayar angsuran, hingga cetak sertifikat wakaf langsung dari *smartphone* Anda 24/7.</p>
+          </div>
+        </div>
+        
+        <div class="vp-item">
+          <div class="vp-item-icon">🎓</div>
+          <div class="vp-item-text">
+            <h4>Jejaring Komunitas Kuat</h4>
+            <p>Didukung oleh jejaring alumni UIN Jakarta, membuka peluang kolaborasi dan *networking* bisnis antar anggota.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ CTA BANNER ════ -->
+  <section class="cta-banner">
+    <div class="container">
+      <div class="cta-box">
+        <h2>Siap Membangun Ekonomi Keumatan?</h2>
+        <p>Pendaftaran akun secara *online* hanya membutuhkan waktu kurang dari 5 menit. Siapkan e-KTP Anda dan jadilah bagian dari perubahan.</p>
+        <button class="btn" style="background: #fff; color: var(--gold); font-size: 16px; padding: 14px 32px;" onclick="window.location.href='syahida_registrasi.html'">
+          Daftar Sekarang →
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ FOOTER ════ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">BMT Syahidah IKALUIN</div>
+          <p style="font-size: 13px; line-height: 1.6; margin-bottom: 20px;">
+            Koperasi Syariah terpercaya untuk Alumni UIN Syarif Hidayatullah Jakarta dan masyarakat luas. Bersama membangun ekonomi umat yang adil dan berkah.
+          </p>
+          <div style="font-family: 'Amiri', serif; font-size: 20px; color: var(--gold-light);">
+            بيت المال والتمويل
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Layanan</h4>
+          <ul class="footer-links">
+            <li><a href="#">Simpanan Syariah</a></li>
+            <li><a href="#">Pembiayaan Modal</a></li>
+            <li><a href="#">Deposito Berjangka</a></li>
+            <li><a href="#">Zakat & Wakaf</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Bantuan</h4>
+          <ul class="footer-links">
+            <li><a href="#">Cara Mendaftar</a></li>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Syarat & Ketentuan</a></li>
+            <li><a href="#">Kebijakan Privasi</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Hubungi Kami</h4>
+          <ul class="footer-links" style="font-size: 13px;">
+            <li style="display: flex; gap: 8px;"><span>📍</span> Jl. Ir. H. Juanda No. 95, Ciputat, Tangerang Selatan</li>
+            <li style="display: flex; gap: 8px;"><span>✉️</span> bmt@ikaluin.ac.id</li>
+            <li style="display: flex; gap: 8px;"><span>📞</span> +62 811-0000-0000</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2024 BMT Syahidah IKALUIN. Hak Cipta Dilindungi.</div>
+        <div style="display: flex; gap: 16px;">
+          <span>Facebook</span>
+          <span>Instagram</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Efek shadow pada navbar saat di-scroll
+    window.addEventListener('scroll', () => {
+      const nav = document.getElementById('navbar');
+      if (window.scrollY > 20) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+    });
+  </script>
+</body>
+</html> 
