@@ -241,7 +241,6 @@
             <div class="card-title">Progres Program Wakaf Aktif</div>
             <div class="card-sub">6 program berjalan · Diperbarui real-time</div>
           </div>
-          <button class="btn btn-outline" style="font-size:11.5px;padding:6px 14px;" onclick="goPage('wakaf')">Lihat Semua</button>
         </div>
         <div class="card-body">
           <div class="program-list">
@@ -815,7 +814,6 @@
       <div class="donasi-tabs" id="donasi-tabs">
         <div class="dtab active" onclick="switchDonasi(this,'tab-zis')">Zakat, Infaq & Sedekah</div>
         <div class="dtab" onclick="switchDonasi(this,'tab-wakaf')">Wakaf Produktif</div>
-        <div class="dtab" onclick="switchDonasi(this,'tab-riwayat')">Riwayat</div>
       </div>
 
       <!-- Tab: ZIS -->

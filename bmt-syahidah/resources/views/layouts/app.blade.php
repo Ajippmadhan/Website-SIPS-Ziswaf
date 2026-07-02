@@ -894,9 +894,9 @@ function toggleTheme() {
 /* ── NAV ── */
 function goPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
   document.getElementById('page-' + id).classList.add('active');
-  document.querySelectorAll('.nav-btn').forEach(b => {
+  document.querySelectorAll('.nav-item').forEach(b => {
     if (b.getAttribute('onclick') && b.getAttribute('onclick').includes("'" + id + "'")) b.classList.add('active');
   });
 }
@@ -1013,6 +1013,13 @@ function prosesZis() {
   openModal('modal-konfirmasi-zis');
 }
 
+function konfirmasiZisFinal() {
+  const jenis = document.getElementById('konfirmasi-zis-jenis').textContent;
+  const nominal = document.getElementById('konfirmasi-zis-nominal').textContent;
+  closeModal('modal-konfirmasi-zis');
+  toast('✅ ' + jenis + ' sebesar ' + nominal + ' berhasil disalurkan. Jazakumullahu khairan!');
+}
+
 function prosesWakaf() {
   const check = document.getElementById('ikrar-check');
   if (!check.checked) { toast('⚠️ Centang persetujuan ikrar wakaf terlebih dahulu.'); return; }
@@ -1020,6 +1027,11 @@ function prosesWakaf() {
   if (!nominal || parseInt(nominal) < 10000) { toast('⚠️ Masukkan nominal wakaf minimal Rp 10.000.'); return; }
   document.getElementById('cert-nominal').textContent = 'Rp ' + parseInt(nominal).toLocaleString('id-ID');
   openModal('modal-wakaf-otp');
+}
+
+function konfirmasiWakafFinal() {
+  closeModal('modal-wakaf-otp');
+  openModal('modal-wakaf-cert');
 }
 
 /* ── MODAL ── */

@@ -10,32 +10,32 @@
    DESIGN TOKENS & BASE
 ════════════════════════════════════════ */
 :root {
-  --teal-950: #071f1c;
-  --teal-900: #0c3b35;
-  --teal-700: #145e53;
-  --teal-500: #1d8a78;
-  --teal-300: #4db8a5;
-  --teal-100: #d4f0eb;
-  --teal-50:  #edf9f7;
-  --gold:     #c9953a;
-  --gold-light:#e8b96a;
-  --gold-pale:#fef3dc;
-  --cream:    #faf7f2;
-  --cream-d:  #f0ebe0;
-  --sand:     #e0d8c8;
+  --teal-950: #021b4d;
+  --teal-900: #023e8a;
+  --teal-700: #0077b6;
+  --teal-500: #0096c7;
+  --teal-300: #48cae4;
+  --teal-100: #dbf0f8;
+  --teal-50:  #f4f9fc;
+  --gold:     #00b4d8;
+  --gold-light:#90e0ef;
+  --gold-pale:#dcf3fa;
+  --cream:    #f4f9fc;
+  --cream-d:  #e7f1f7;
+  --sand:     #e7f1f7;
   --white:    #ffffff;
   --ink:      #111827;
   --ink-mid:  #374151;
   --muted:    #6b7280;
   --faint:    #9ca3af;
-  --border:   rgba(20,94,83,0.13);
+  --border:   rgba(0,119,182,0.13);
   --danger:   #dc2626;
   --success:  #059669;
   --radius-xl: 20px;
   --radius-lg: 16px;
   --radius-md: 10px;
   --radius-sm: 7px;
-  --shadow: 0 8px 30px rgba(12,59,53,0.08);
+  --shadow: 0 8px 30px rgba(2,62,138,0.08);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -68,7 +68,7 @@ a { text-decoration: none; color: inherit; }
   content: '';
   position: absolute; bottom: -100px; right: -100px;
   width: 400px; height: 400px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(201,149,58,0.15) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(0,180,216,0.15) 0%, transparent 70%);
   pointer-events: none;
 }
 .left-panel::after {
@@ -138,7 +138,7 @@ a { text-decoration: none; color: inherit; }
   outline: none; transition: all 0.2s;
   width: 100%;
 }
-.finput:focus { border-color: var(--teal-500); box-shadow: 0 0 0 3px rgba(29,138,120,0.12); }
+.finput:focus { border-color: var(--teal-500); box-shadow: 0 0 0 3px rgba(0,150,199,0.12); }
 .finput::placeholder { color: var(--faint); }
 
 .input-wrap { position: relative; }
@@ -182,7 +182,7 @@ a { text-decoration: none; color: inherit; }
   background: var(--teal-900); color: #fff;
   padding: 14px 24px; border-radius: var(--radius-md);
   font-size: 14px; font-weight: 600;
-  box-shadow: 0 12px 36px rgba(12,59,53,0.2);
+  box-shadow: 0 12px 36px rgbargba(2,62,138,0.2);
   z-index: 999; opacity: 0; visibility: hidden;
   transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
   display: flex; align-items: center; gap: 10px;
@@ -221,7 +221,7 @@ a { text-decoration: none; color: inherit; }
 
   <!-- ════ RIGHT PANEL (FORM) ════ -->
   <main class="right-panel">
-    <a href="index.html" class="nav-back">← Kembali ke Beranda</a>
+    <a href="/" class="nav-back">← Kembali ke Beranda</a>
 
     <div class="form-wrapper">
       <div class="form-header">
@@ -255,7 +255,7 @@ a { text-decoration: none; color: inherit; }
 
       <div class="register-prompt">
         Belum menjadi anggota? 
-        <a href="registrasi.html" class="register-link">Daftar Sekarang</a>
+        <a href="/registrasi" class="register-link">Daftar Sekarang</a>
       </div>
     </div>
   </main>

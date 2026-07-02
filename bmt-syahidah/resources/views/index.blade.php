@@ -10,30 +10,32 @@
    DESIGN TOKENS & BASE
 ════════════════════════════════════════ */
 :root {
-  --teal-950: #071f1c;
-  --teal-900: #0c3b35;
-  --teal-700: #145e53;
-  --teal-500: #1d8a78;
-  --teal-300: #4db8a5;
-  --teal-100: #d4f0eb;
-  --teal-50:  #edf9f7;
-  --gold:     #c9953a;
-  --gold-light:#e8b96a;
-  --gold-pale:#fef3dc;
-  --cream:    #faf7f2;
-  --cream-d:  #f0ebe0;
-  --sand:     #e0d8c8;
+  --teal-950: #021b4d;
+  --teal-900: #023e8a;
+  --teal-700: #0077b6;
+  --teal-500: #0096c7;
+  --teal-300: #48cae4;
+  --teal-100: #dbf0f8;
+  --teal-50:  #f4f9fc;
+  --gold:     #00b4d8;
+  --gold-light:#90e0ef;
+  --gold-pale:#dcf3fa;
+  --cream:    #f4f9fc;
+  --cream-d:  #e7f1f7;
+  --sand:     #e7f1f7;
   --white:    #ffffff;
   --ink:      #111827;
   --ink-mid:  #374151;
   --muted:    #6b7280;
   --faint:    #9ca3af;
-  --border:   rgba(20,94,83,0.13);
+  --border:   rgba(0,119,182,0.13);
+  --danger:   #dc2626;
+  --success:  #059669;
   --radius-xl: 20px;
   --radius-lg: 16px;
   --radius-md: 10px;
-  --shadow-sm: 0 4px 12px rgba(12,59,53,0.05);
-  --shadow-lg: 0 12px 36px rgba(12,59,53,0.12);
+  --radius-sm: 7px;
+  --shadow: 0 8px 30px rgba(2,62,138,0.08);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -84,12 +86,11 @@ a { text-decoration: none; color: inherit; }
 }
 
 .logo-icon {
-  width: 44px; height: 44px;
-  background: var(--teal-900);
-  border-radius: 12px;
-  display: flex; align-items: center; justify-content: center;
-  font-family: 'Amiri', serif;
-  font-size: 20px; color: var(--gold-light);
+  width: 44px; /* Sesuaikan ukuran lebarnya kalau kurang gede */
+  height: 44px; /* Sesuaikan ukuran tingginya */
+  object-fit: contain; /* Biar rasio gambar lu tetap proporsional dan nggak gepeng */
+  border-radius: 4px; /* Biar ujungnya ga kaku banget kalau misal logonya kotak */
+  background: transparent; /* Hilangkan background biru tua yang lama */
 }
 
 .logo-text {
@@ -380,7 +381,7 @@ a { text-decoration: none; color: inherit; }
   .feature-grid { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr; }
   .hero-title { font-size: 36px; }
-}
+}b
 </style>
 </head>
 <body>
@@ -388,13 +389,13 @@ a { text-decoration: none; color: inherit; }
   <!-- ════ NAVBAR ════ -->
   <nav class="navbar" id="navbar">
     <div class="container nav-content">
-      <div class="logo-group">
-        <div class="logo-icon">م</div>
-        <div class="logo-text">
-          <span class="logo-title">BMT Syahidah</span>
-          <span class="logo-sub">Koperasi Syariah IKALUIN</span>
-        </div>
-      </div>
+ <div class="logo-group">
+  <img src="{{ asset('img/logo.bmt.png') }}" alt="Logo BMT Syahidah" class="logo-icon">
+  <div class="logo-text">
+    <span class="logo-title">BMT Syahidah</span>
+    <span class="logo-sub">Koperasi Syariah IKALUIN</span>
+  </div>
+</div>
       
       <div class="nav-links">
         <a href="#" class="nav-link">Beranda</a>

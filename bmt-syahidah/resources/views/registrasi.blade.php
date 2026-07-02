@@ -7,25 +7,25 @@
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --teal-950: #071f1c;
-  --teal-900: #0c3b35;
-  --teal-700: #145e53;
-  --teal-500: #1d8a78;
-  --teal-300: #4db8a5;
-  --teal-100: #d4f0eb;
-  --teal-50:  #edf9f7;
-  --gold:     #c9953a;
-  --gold-light:#e8b96a;
-  --gold-pale:#fef3dc;
-  --cream:    #faf7f2;
-  --cream-d:  #f0ebe0;
-  --sand:     #e0d8c8;
+  --teal-950: #021b4d;
+  --teal-900: #023e8a;
+  --teal-700: #0077b6;
+  --teal-500: #0096c7;
+  --teal-300: #48cae4;
+  --teal-100: #dbf0f8;
+  --teal-50:  #f4f9fc;
+  --gold:     #00b4d8;
+  --gold-light:#90e0ef;
+  --gold-pale:#dcf3fa;
+  --cream:    #f4f9fc;
+  --cream-d:  #e7f1f7;
+  --sand:     #e7f1f7;
   --white:    #ffffff;
   --ink:      #111827;
   --ink-mid:  #374151;
   --muted:    #6b7280;
   --faint:    #9ca3af;
-  --border:   rgba(20,94,83,0.13);
+  --border:   rgba(0,119,182,0.13);
   --danger:   #dc2626;
   --danger-bg:#fef2f2;
   --success:  #059669;
@@ -33,7 +33,7 @@
   --r-lg: 16px;
   --r-md: 10px;
   --r-sm: 7px;
-  --shadow: 0 4px 28px rgba(12,59,53,0.10);
+  --shadow: 0 4px 28px rgba(2,62,138,0.10);
 }
 
 * { margin:0; padding:0; box-sizing:border-box; }
@@ -63,7 +63,7 @@ body {
   content: '';
   position: absolute; bottom: -80px; right: -80px;
   width: 320px; height: 320px; border-radius: 50%;
-  background: rgba(201,149,58,0.10);
+  background: rgba(0,180,216,0.10);
   pointer-events: none;
 }
 .left-panel::after {
@@ -113,7 +113,7 @@ body {
   height: calc(100% - 28px);
   background: rgba(255,255,255,0.12);
 }
-.step-item.done:not(:last-child)::before { background: rgba(201,149,58,0.4); }
+.step-item.done:not(:last-child)::before { background: rgba(0,180,216,0.4); }
 .step-item.active:not(:last-child)::before { background: rgba(255,255,255,0.12); }
 
 .step-circle {
@@ -238,10 +238,10 @@ body {
 }
 .finput:focus, .fselect:focus, .ftextarea:focus {
   border-color: var(--teal-500);
-  box-shadow: 0 0 0 3px rgba(29,138,120,0.12);
+  box-shadow: 0 0 0 3px rgba(0,150,199,0.12);
 }
 .finput::placeholder, .ftextarea::placeholder { color: var(--faint); }
-.finput.error { border-color: var(--danger); box-shadow: 0 0 0 3px rgba(220,38,38,0.10); }
+.finput.error, .fselect.error, .ftextarea.error { border-color: var(--danger); box-shadow: 0 0 0 3px rgba(220,38,38,0.10); }
 .finput.valid { border-color: var(--success); }
 .ftextarea { resize: vertical; min-height: 80px; }
 
@@ -293,7 +293,7 @@ body {
 .mem-tile.selected {
   border-color: var(--teal-700);
   background: var(--teal-50);
-  box-shadow: 0 0 0 3px rgba(29,138,120,0.12);
+  box-shadow: 0 0 0 3px rgba(0,150,199,0.12);
 }
 .mem-icon { font-size: 24px; margin-bottom: 6px; display: block; }
 .mem-label { font-size: 12px; font-weight: 700; color: var(--ink-mid); }
@@ -312,7 +312,7 @@ body {
 /* ════ UPLOAD ZONE ════ */
 .upload-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .upload-zone {
-  border: 2px dashed var(--sand);
+  border: 2px dashed var(--teal-300);
   border-radius: var(--r-lg);
   padding: 22px 16px;
   text-align: center;
@@ -321,8 +321,9 @@ body {
   background: var(--white);
   position: relative;
 }
-.upload-zone:hover { border-color: var(--teal-300); background: var(--teal-50); }
+.upload-zone:hover { border-color: var(--teal-500); background: var(--teal-50); }
 .upload-zone.has-file { border-color: var(--success); border-style: solid; background: var(--success-bg); }
+.upload-zone.missing { border-color: var(--danger); background: var(--danger-bg); }
 .upload-zone input[type=file] {
   position: absolute; inset: 0; opacity: 0; cursor: pointer;
 }
@@ -339,7 +340,7 @@ body {
 
 /* Selfie frame */
 .selfie-zone {
-  border: 2px dashed var(--sand);
+  border: 2px dashed var(--teal-300);
   border-radius: 50%;
   width: 120px; height: 120px;
   margin: 0 auto 16px;
@@ -348,7 +349,8 @@ body {
   transition: all 0.2s; position: relative;
   background: var(--cream);
 }
-.selfie-zone:hover { border-color: var(--teal-300); background: var(--teal-50); }
+.selfie-zone:hover { border-color: var(--teal-500); background: var(--teal-50); }
+.selfie-zone.missing { border-color: var(--danger); background: var(--danger-bg); }
 .selfie-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; border-radius: 50%; }
 .selfie-icon { font-size: 32px; }
 .selfie-label { font-size: 10.5px; color: var(--faint); text-align: center; margin-top: 4px; line-height: 1.3; }
@@ -367,7 +369,7 @@ body {
 .prod-option.selected {
   border-color: var(--teal-700);
   background: var(--teal-50);
-  box-shadow: 0 0 0 3px rgba(29,138,120,0.10);
+  box-shadow: 0 0 0 3px rgba(0,150,199,0.10);
 }
 .prod-radio {
   width: 18px; height: 18px; border-radius: 50%;
@@ -402,7 +404,7 @@ body {
 
 .setoran-box {
   background: var(--gold-pale);
-  border: 1px solid rgba(201,149,58,0.22);
+  border: 1px solid rgba(0,180,216,0.22);
   border-radius: var(--r-md);
   padding: 14px 16px;
   margin-top: 14px;
@@ -478,7 +480,7 @@ body {
   cursor: pointer; transition: all 0.2s;
   display: flex; align-items: center; justify-content: center; gap: 8px;
 }
-.btn-next:hover { background: var(--teal-700); transform: translateY(-1px); box-shadow: 0 4px 18px rgba(12,59,53,0.22); }
+.btn-next:hover { background: var(--teal-700); transform: translateY(-1px); box-shadow: 0 4px 18px rgba(2,62,138,0.22); }
 .btn-next:disabled { background: var(--sand); color: var(--faint); cursor: not-allowed; transform: none; box-shadow: none; }
 .btn-back {
   padding: 14px 20px;
@@ -545,16 +547,16 @@ body {
 .login-link:hover { text-decoration: underline; }
 
 /* OTP boxes */
-.otp-row { display: flex; gap: 10px; margin: 18px 0; }
+.otp-row { display: flex; justify-content: center; gap: 10px; margin: 18px 0; }
 .otp-box {
-  flex: 1; height: 54px;
-  border: 1.5px solid var(--sand); border-radius: var(--r-md);
+  width: 52px; height: 58px; flex: 0 0 52px;
+  border: 2px solid var(--teal-300); border-radius: var(--r-md);
   font-size: 22px; font-weight: 700; text-align: center;
   font-family: 'DM Mono', monospace; color: var(--teal-900);
   outline: none; transition: all 0.15s;
   background: var(--white);
 }
-.otp-box:focus { border-color: var(--teal-500); box-shadow: 0 0 0 3px rgba(29,138,120,0.12); }
+.otp-box:focus { border-color: var(--teal-500); box-shadow: 0 0 0 3px rgba(0,150,199,0.18); }
 
 /* Toast */
 .toast {
@@ -562,7 +564,7 @@ body {
   background: var(--teal-900); color: #fff;
   padding: 13px 18px; border-radius: var(--r-md);
   font-size: 13px; font-weight: 500;
-  box-shadow: 0 8px 28px rgba(12,59,53,0.28);
+  box-shadow: 0 8px 28px rgba(2,62,138,0.28);
   z-index: 999;
   transform: translateY(70px); opacity: 0;
   transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
@@ -670,7 +672,7 @@ body {
           </div>
           <div class="field">
             <label class="flabel">Jenis Kelamin <span class="required-star">*</span></label>
-            <select class="fselect">
+            <select class="fselect" id="f-jk">
               <option value="">— Pilih —</option>
               <option>Laki-laki</option>
               <option>Perempuan</option>
@@ -678,7 +680,7 @@ body {
           </div>
           <div class="field">
             <label class="flabel">Agama <span class="required-star">*</span></label>
-            <select class="fselect">
+            <select class="fselect" id="f-agama">
               <option value="">— Pilih —</option>
               <option selected>Islam</option>
               <option>Lainnya</option>
@@ -775,7 +777,7 @@ body {
       </div>
 
       <div class="btn-row">
-        <button class="btn-next" onclick="goStep(2)">Lanjut: Upload Dokumen →</button>
+        <button class="btn-next" onclick="checkStep1()">Lanjut: Upload Dokumen →</button>
       </div>
       <div class="login-hint">Sudah punya akun? <span class="login-link" onclick="window.location.href='/login'">Masuk sekarang</span></div>
     </div>
@@ -852,7 +854,7 @@ body {
 
       <div class="btn-row">
         <button class="btn-back" onclick="goStep(1)">← Kembali</button>
-        <button class="btn-next" onclick="goStep(3)">Lanjut: Pilih Produk →</button>
+        <button class="btn-next" onclick="checkStep2()">Lanjut: Pilih Produk →</button>
       </div>
     </div>
 
@@ -964,7 +966,7 @@ body {
 
       <div class="btn-row">
         <button class="btn-back" onclick="goStep(2)">← Kembali</button>
-        <button class="btn-next" onclick="goStep(4)">Lanjut: Konfirmasi →</button>
+        <button class="btn-next" onclick="checkStep3()">Lanjut: Konfirmasi →</button>
       </div>
     </div>
 
@@ -1202,6 +1204,7 @@ function fileSelected(input, zoneId, fnId) {
   const zone = document.getElementById(zoneId);
   const fn = document.getElementById(fnId);
   zone.classList.add('has-file');
+  zone.classList.remove('missing');
   fn.textContent = input.files[0].name.substring(0,28) + (input.files[0].name.length>28?'…':'');
   if (zoneId === 'uz-foto') {
     document.getElementById('selfie-check').style.display = 'block';
@@ -1256,13 +1259,113 @@ function checkPw(input) {
   const labels = ['Masukkan kata sandi','Terlalu lemah','Cukup','Cukup kuat','Kata sandi kuat ✓'];
   const label = document.getElementById('pw-label');
   label.textContent = labels[score];
-  const colors = ['#9ca3af','#dc2626','#c9953a','#c9953a','#059669'];
+  const colors = ['#9ca3af','#dc2626','#00b4d8','#00b4d8','#059669'];
   label.style.color = colors[score];
 }
 
 function togglePw(id) {
   const el = document.getElementById(id);
   el.type = el.type === 'password' ? 'text' : 'password';
+}
+
+/* ── VALIDASI STEP 1: DATA DIRI ── */
+function validateStep1() {
+  let ok = true;
+  let firstInvalid = null;
+  const required = ['f-nama','f-nik','f-ttl-tempat','f-ttl-tgl','f-jk','f-agama','f-alamat','f-hp','f-email','f-pw','f-pw2'];
+
+  required.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (!el.value.trim()) {
+      el.classList.add('error');
+      ok = false;
+      if (!firstInvalid) firstInvalid = el;
+    } else {
+      el.classList.remove('error');
+    }
+  });
+
+  const nikEl = document.getElementById('f-nik');
+  const nikDigits = nikEl.value.replace(/\D/g,'');
+  if (nikDigits.length > 0 && nikDigits.length !== 16) {
+    nikEl.classList.add('error');
+    ok = false;
+    if (!firstInvalid) firstInvalid = nikEl;
+  }
+
+  const pwEl = document.getElementById('f-pw');
+  const pw2El = document.getElementById('f-pw2');
+  const pwMatchErr = document.getElementById('pw-match-err');
+  if (pwEl.value && pwEl.value.length < 8) {
+    pwEl.classList.add('error');
+    ok = false;
+    if (!firstInvalid) firstInvalid = pwEl;
+  }
+  if (pwEl.value && pw2El.value && pwEl.value !== pw2El.value) {
+    pw2El.classList.add('error');
+    pwMatchErr.style.display = 'block';
+    ok = false;
+    if (!firstInvalid) firstInvalid = pw2El;
+  } else {
+    pwMatchErr.style.display = 'none';
+  }
+
+  if (!ok) {
+    toast('⚠️ Harap lengkapi semua data bertanda (*) sebelum melanjutkan.');
+    if (firstInvalid) firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return false;
+  }
+  return true;
+}
+function checkStep1() {
+  if (validateStep1()) goStep(2);
+}
+
+/* ── VALIDASI STEP 2: DOKUMEN WAJIB ── */
+function validateStep2() {
+  const wajib = ['uz-ktp', 'uz-kk', 'uz-foto'];
+  let ok = true;
+  let firstInvalid = null;
+
+  wajib.forEach(id => {
+    const zone = document.getElementById(id);
+    if (!zone.classList.contains('has-file')) {
+      zone.classList.add('missing');
+      ok = false;
+      if (!firstInvalid) firstInvalid = zone;
+    } else {
+      zone.classList.remove('missing');
+    }
+  });
+
+  if (!ok) {
+    toast('⚠️ Harap upload KTP, Kartu Keluarga, dan Pas Foto terlebih dahulu.');
+    if (firstInvalid) firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return false;
+  }
+  return true;
+}
+function checkStep2() {
+  if (validateStep2()) goStep(3);
+}
+
+/* ── VALIDASI STEP 3: SETORAN AWAL ── */
+function validateStep3() {
+  const setoranEl = document.getElementById('f-setoran');
+  const val = parseInt(setoranEl.value, 10);
+
+  if (!setoranEl.value || isNaN(val) || val < 10000) {
+    setoranEl.classList.add('error');
+    toast('⚠️ Harap isi Setoran Awal Simpanan minimal Rp 10.000 sebelum melanjutkan.');
+    setoranEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return false;
+  }
+  setoranEl.classList.remove('error');
+  return true;
+}
+function checkStep3() {
+  if (validateStep3()) goStep(4);
 }
 
 /* ── SUBMIT ── */
