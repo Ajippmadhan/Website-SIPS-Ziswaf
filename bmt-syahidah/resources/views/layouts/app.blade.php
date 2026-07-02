@@ -707,10 +707,16 @@ body {
 
 /* ════ TAMBAHAN VARIABEL WARNA (EMERALD) ════ */
 :root {
-  --emerald: #0a5c44;
+ --emerald: #0a5c44;
   --emerald-mid: #147a5c;
   --emerald-light: #1fa87d;
   --surface: #ffffff;
+  --gold: #c9953a;
+  --gold-light: #e0b563;
+  --cream: #faf6ec;
+  --cream-dark: #f0e8d8;
+  --muted: #6b7280;
+  --shadow: 0 2px 16px rgba(10,92,68,0.08);
 }
 
 /* ════ SIDEBAR BARU (PENGGANTI .nav LAMA) ════ */
@@ -792,6 +798,8 @@ body {
 .kpi-change.down { color: #ef4444; background: rgba(239,68,68,0.08); }
 
 .content-grid { display: grid; grid-template-columns: 1fr 360px; gap: 20px; margin-bottom: 28px; }
+.card-header { padding: 18px 22px 14px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
+.program-item { }
 .program-list { display: flex; flex-direction: column; gap: 18px; }
 .program-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 8px; }
 .program-name { font-size: 13px; font-weight: 600; color: var(--ink); }
@@ -875,6 +883,14 @@ table.data-table tr:hover td { background: var(--cream); }
 </div>
 
 <script>
+function filterRiwayat(el, kategori) {
+  document.querySelectorAll('#riwayat-filter-tabs .ptab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('#riwayat-table tbody tr').forEach(row => {
+    row.style.display = (kategori === 'semua' || row.dataset.kategori === kategori) ? '' : 'none';
+  });
+}
+
 /* ── THEME TOGGLE ── */
 function toggleTheme() {
   const isDark = document.body.classList.toggle('dark-mode');
@@ -886,9 +902,9 @@ function toggleTheme() {
 /* ── NAV ── */
 function goPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
   document.getElementById('page-' + id).classList.add('active');
-  document.querySelectorAll('.nav-btn').forEach(b => {
+  document.querySelectorAll('.nav-item').forEach(b => {
     if (b.getAttribute('onclick') && b.getAttribute('onclick').includes("'" + id + "'")) b.classList.add('active');
   });
 }

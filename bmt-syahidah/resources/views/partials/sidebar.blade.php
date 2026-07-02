@@ -7,7 +7,7 @@
 
   <nav class="sidebar-nav">
     <div class="nav-section-label">Utama</div>
-    <div class="nav-item active" onclick="goPage('dashboard')">
+    <div class="nav-item" onclick="goPage('dashboard')">
       <span class="nav-icon">🕌</span>
       Dashboard Wakaf
     </div>
@@ -27,28 +27,18 @@
       <span class="nav-icon">🤲</span>
       Zakat, Infaq & Sedekah
     </div>
-
-    <div class="nav-section-label">Manajemen</div>
-    <div class="nav-item" onclick="goPage('anggota')">
-      <span class="nav-icon">👥</span>
-      Data Anggota
-    </div>
-    <div class="nav-item" onclick="goPage('laporan')">
-      <span class="nav-icon">📊</span>
-      Laporan Keuangan
-    </div>
-    <div class="nav-item" onclick="goPage('dps')">
-      <span class="nav-icon">⚖️</span>
-      Kepatuhan Syariah
+    <div class="nav-item" onclick="goPage('riwayat')">
+      <span class="nav-icon">🧾</span>
+      Riwayat Transaksi
     </div>
   </nav>
 
   <div class="sidebar-footer">
     <div class="user-card" onclick="goPage('profil')">
-      <div class="user-avatar">SA</div>
+      <div class="user-avatar">MA</div>
       <div class="user-info">
-        <div class="user-name">Suci Anugrah</div>
-        <div class="user-role">Admin / Teller</div>
+        <div class="user-name">Musyaffa Abdullah</div>
+        <div class="user-role">Nasabah</div>
       </div>
       <span style="color:rgba(255,255,255,0.4);cursor:pointer;font-size:14px;">⚙</span>
     </div>

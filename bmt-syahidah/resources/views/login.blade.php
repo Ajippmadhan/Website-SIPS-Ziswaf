@@ -231,8 +231,8 @@ a { text-decoration: none; color: inherit; }
 
       <form id="loginForm" onsubmit="handleLogin(event)">
         <div class="field">
-          <label class="flabel">No. Anggota / Email</label>
-          <input type="text" class="finput" id="emailInput" placeholder="Contoh: BMT-2024-0029 atau email" required>
+          <label class="flabel">Email</label>
+          <input type="text" class="finput" id="emailInput" placeholder="Contoh: nama@gmail.com" required>
         </div>
 
         <div class="field">

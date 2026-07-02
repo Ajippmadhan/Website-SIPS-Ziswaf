@@ -400,7 +400,6 @@ a { text-decoration: none; color: inherit; }
         <a href="#" class="nav-link">Beranda</a>
         <a href="#layanan" class="nav-link">Layanan</a>
         <a href="#tentang" class="nav-link">Tentang Kami</a>
-        <a href="#zis" class="nav-link">ZIS & Wakaf</a>
       </div>
 
       <div class="nav-actions">
