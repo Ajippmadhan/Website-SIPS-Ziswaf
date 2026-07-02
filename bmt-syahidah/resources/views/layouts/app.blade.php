@@ -15,25 +15,25 @@
    Arabic inscription — the one memorable element
 ════════════════════════════════════════ */
 :root {
-  --teal-900: #0c3b35;
-  --teal-700: #145e53;
-  --teal-500: #1d8a78;
-  --teal-300: #4db8a5;
-  --teal-100: #d4f0eb;
-  --saffron: #d4860a;
-  --saffron-light: #f0a832;
-  --saffron-pale: #fef3dc;
-  --sand-100: #faf7f2;
-  --sand-200: #f0ebe0;
-  --sand-300: #e0d8c8;
+  --teal-900: #023e8a;
+  --teal-700: #0077b6;
+  --teal-500: #0096c7;
+  --teal-300: #48cae4;
+  --teal-100: #dbf0f8;
+  --saffron: #00b4d8;
+  --saffron-light: #90e0ef;
+  --saffron-pale: #dcf3fa;
+  --sand-100: #f4f9fc;
+  --sand-200: #e7f1f7;
+  --sand-300: #90e0ef;
   --white: #ffffff;
   --ink: #111827;
   --ink-mid: #374151;
   --ink-soft: #6b7280;
   --ink-faint: #9ca3af;
-  --border: rgba(20,94,83,0.12);
-  --card-shadow: 0 2px 16px rgba(12,59,53,0.08);
-  --card-shadow-hover: 0 8px 36px rgba(12,59,53,0.14);
+  --border: rgba(0,119,182,0.12);
+  --card-shadow: 0 2px 16px rgba(2,62,138,0.08);
+  --card-shadow-hover: 0 8px 36px rgba(2,62,138,0.14);
   --radius-xl: 20px;
   --radius-lg: 14px;
   --radius-md: 10px;
@@ -62,10 +62,10 @@ body, .header, .card, .modal, .finput, .fselect, .qa-btn, .prod-card, .dtab, .wp
 
 /* Penyesuaian khusus Dark Mode */
 body.dark-mode .jatuh-tempo-alert {
-  background: linear-gradient(135deg, rgba(212,134,10,0.15), rgba(212,134,10,0.05));
+  background: linear-gradient(135deg, rgba(0,180,216,0.15), rgba(0,180,216,0.05));
 }
 body.dark-mode .angsuran-tag {
-  background: linear-gradient(135deg, rgba(212,134,10,0.15), var(--sand-200));
+  background: linear-gradient(135deg, rgba(0,180,216,0.15), var(--sand-200));
 }
 body.dark-mode .jadwal-table th { background: var(--sand-200); color: var(--ink-mid); }
 body.dark-mode .jadwal-table tr:hover td { background: var(--sand-200); }
@@ -205,7 +205,7 @@ body {
 
 /* ── SALDO CARD (SIGNATURE ELEMENT) ── */
 .saldo-card {
-  background: linear-gradient(135deg, var(--teal-900) 0%, var(--teal-700) 55%, #1a7a6a 100%);
+  background: linear-gradient(135deg, var(--teal-900) 0%, var(--teal-700) 55%, #0096c7 100%);
   border-radius: var(--radius-xl);
   padding: 28px 32px;
   color: #fff;
@@ -219,7 +219,7 @@ body {
   position: absolute; top: 0; right: 0; bottom: 0;
   width: 55%;
   background:
-    radial-gradient(circle at 80% 30%, rgba(212,134,10,0.18) 0%, transparent 60%),
+    radial-gradient(circle at 80% 30%, rgba(0,180,216,0.18) 0%, transparent 60%),
     radial-gradient(circle at 90% 80%, rgba(255,255,255,0.06) 0%, transparent 50%);
   pointer-events: none;
 }
@@ -278,7 +278,7 @@ body {
   transition: all 0.15s;
 }
 .saldo-pill:hover { background: rgba(255,255,255,0.18); }
-.saldo-pill.active-pill { background: rgba(212,134,10,0.30); border-color: var(--saffron-light); }
+.saldo-pill.active-pill { background: rgba(0,180,216,0.30); border-color: var(--saffron-light); }
 .saldo-pill .p-name { font-size: 10px; opacity: 0.65; margin-bottom: 3px; }
 .saldo-pill .p-val { font-size: 14px; font-weight: 700; }
 
@@ -346,7 +346,7 @@ body {
   display: flex; align-items: center; justify-content: center;
   font-size: 16px; flex-shrink: 0;
 }
-.mutasi-ico.in { background: rgba(29,138,120,0.10); }
+.mutasi-ico.in { background: rgba(0,150,199,0.10); }
 .mutasi-ico.out { background: rgba(248,113,113,0.10); }
 .mutasi-ico.bagi { background: var(--saffron-pale); }
 .mutasi-info { flex: 1; }
@@ -376,8 +376,8 @@ body {
 .pm-meta strong { color: var(--ink); }
 
 .jatuh-tempo-alert {
-  background: linear-gradient(135deg, #fffbeb, #fef9e7);
-  border: 1px solid rgba(212,134,10,0.25);
+  background: linear-gradient(135deg, #e7f1f7, #f4f9fc);
+  border: 1px solid rgba(0,180,216,0.25);
   border-radius: var(--radius-lg);
   padding: 16px 18px;
   display: flex; gap: 12px; align-items: flex-start;
@@ -395,7 +395,7 @@ body {
   border: none; font-family: inherit;
   transition: background 0.15s;
 }
-.jt-btn:hover { background: #b8720a; }
+.jt-btn:hover { background: #0077b6; }
 
 /* ── BAGI HASIL ESTIMASI ── */
 .bagi-card {
@@ -442,7 +442,7 @@ body {
   position: relative; overflow: hidden;
 }
 .prod-card:hover { box-shadow: var(--card-shadow-hover); transform: translateY(-2px); border-color: var(--teal-300); }
-.prod-card.selected { border-color: var(--teal-700); background: rgba(29,138,120,0.04); }
+.prod-card.selected { border-color: var(--teal-700); background: rgba(0,150,199,0.04); }
 .prod-stripe {
   position: absolute; top: 0; left: 0; right: 0;
   height: 4px; border-radius: 14px 14px 0 0;
@@ -478,7 +478,7 @@ body {
   cursor: pointer; transition: all 0.18s;
   display: inline-flex; align-items: center; gap: 7px;
 }
-.btn-primary:hover { background: var(--teal-700); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(12,59,53,0.25); }
+.btn-primary:hover { background: var(--teal-700); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(2,62,138,0.25); }
 .btn-outline {
   background: transparent; color: var(--teal-700);
   padding: 11px 22px; border-radius: var(--radius-md);
@@ -494,7 +494,7 @@ body {
   cursor: pointer; transition: all 0.18s;
   display: inline-flex; align-items: center; gap: 7px;
 }
-.btn-saffron:hover { background: #b8720a; transform: translateY(-1px); }
+.btn-saffron:hover { background: #0077b6; transform: translateY(-1px); }
 
 /* ════════ PEMBIAYAAN PAGE ════════ */
 .pembiayaan-status-card {
@@ -524,7 +524,7 @@ body {
 
 .angsuran-tag {
   background: linear-gradient(135deg, var(--saffron-pale), #fff);
-  border: 1px solid rgba(212,134,10,0.2);
+  border: 1px solid rgba(0,180,216,0.2);
   border-radius: var(--radius-lg);
   padding: 20px 22px;
   text-align: center;
@@ -540,7 +540,7 @@ body {
 .jadwal-table tr:hover td { background: var(--sand-100); }
 .pill-lunas { background: var(--teal-100); color: var(--teal-700); padding: 2px 8px; border-radius: 20px; font-size: 10.5px; font-weight: 700; }
 .pill-belum { background: var(--sand-200); color: var(--ink-soft); padding: 2px 8px; border-radius: 20px; font-size: 10.5px; font-weight: 700; }
-.pill-jatuh { background: rgba(212,134,10,0.12); color: var(--saffron); padding: 2px 8px; border-radius: 20px; font-size: 10.5px; font-weight: 700; }
+.pill-jatuh { background: rgba(0,180,216,0.12); color: var(--saffron); padding: 2px 8px; border-radius: 20px; font-size: 10.5px; font-weight: 700; }
 
 /* ════════ ZIS & WAKAF PAGE ════════ */
 .donasi-tabs { display: flex; gap: 0; margin-bottom: 24px; background: var(--sand-200); border-radius: var(--radius-lg); padding: 4px; }
@@ -549,7 +549,7 @@ body {
   font-size: 12.5px; font-weight: 600; cursor: pointer;
   text-align: center; transition: all 0.18s; color: var(--ink-soft);
 }
-.dtab.active { background: var(--white); color: var(--teal-900); box-shadow: 0 1px 8px rgba(12,59,53,0.10); }
+.dtab.active { background: var(--white); color: var(--teal-900); box-shadow: 0 1px 8px rgba(2,62,138,0.10); }
 
 .zis-form-wrap { display: grid; grid-template-columns: 1fr 320px; gap: 20px; }
 
@@ -572,12 +572,12 @@ body {
   background: var(--white);
 }
 .wp-item:hover { border-color: var(--teal-300); }
-.wp-item.selected-prog { border-color: var(--teal-700); background: rgba(29,138,120,0.04); }
+.wp-item.selected-prog { border-color: var(--teal-700); background: rgba(0,150,199,0.04); }
 .wp-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
 .wp-name { font-size: 13px; font-weight: 700; color: var(--ink); }
 .wp-cat { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 20px; }
 .wp-cat.pend { background: rgba(59,130,246,0.1); color: #3b82f6; }
-.wp-cat.ekon { background: rgba(29,138,120,0.1); color: var(--teal-700); }
+.wp-cat.ekon { background: rgba(0,150,199,0.1); color: var(--teal-700); }
 .wp-cat.sehat { background: rgba(239,68,68,0.1); color: #ef4444; }
 .wp-progress { height: 5px; background: var(--sand-200); border-radius: 99px; overflow: hidden; margin-bottom: 5px; }
 .wp-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--teal-700), var(--teal-300)); }
@@ -607,7 +607,7 @@ body {
   content: '';
   position: absolute; right: -20px; top: -30px;
   width: 160px; height: 160px; border-radius: 50%;
-  background: rgba(212,134,10,0.12);
+  background: rgba(0,180,216,0.12);
 }
 .profil-av {
   width: 72px; height: 72px; border-radius: 50%;
@@ -650,7 +650,7 @@ body {
   background: var(--teal-900); color: #fff;
   padding: 13px 18px; border-radius: var(--radius-lg);
   font-size: 13px; font-weight: 500;
-  box-shadow: 0 8px 28px rgba(12,59,53,0.28);
+  box-shadow: 0 8px 28px rgba(2,62,138,0.28);
   display: flex; align-items: center; gap: 8px;
   z-index: 999; max-width: 340px;
   transform: translateY(70px); opacity: 0;
@@ -662,7 +662,7 @@ body {
 /* ════════ MODAL OVERLAY ════════ */
 .modal-overlay {
   position: fixed; inset: 0;
-  background: rgba(12,59,53,0.35);
+  background: rgba(2,62,138,0.35);
   backdrop-filter: blur(4px);
   z-index: 200;
   display: none; align-items: center; justify-content: center;
@@ -673,7 +673,7 @@ body {
   border-radius: var(--radius-xl);
   padding: 28px 32px;
   max-width: 440px; width: 90%;
-  box-shadow: 0 24px 64px rgba(12,59,53,0.2);
+  box-shadow: 0 24px 64px rgba(2,62,138,0.2);
   animation: popIn 0.25s cubic-bezier(0.34,1.56,0.64,1);
 }
 @keyframes popIn { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
@@ -707,16 +707,16 @@ body {
 
 /* ════ TAMBAHAN VARIABEL WARNA (EMERALD) ════ */
 :root {
- --emerald: #0a5c44;
-  --emerald-mid: #147a5c;
-  --emerald-light: #1fa87d;
+  --emerald: #023e8a;
+  --emerald-mid: #0077b6;
+  --emerald-light: #0096c7;
   --surface: #ffffff;
-  --gold: #c9953a;
-  --gold-light: #e0b563;
-  --cream: #faf6ec;
-  --cream-dark: #f0e8d8;
+  --gold: #00b4d8;
+  --gold-light: #90e0ef;
+  --cream: #f4f9fc;
+  --cream-dark: #e7f1f7;
   --muted: #6b7280;
-  --shadow: 0 2px 16px rgba(10,92,68,0.08);
+  --shadow: 0 2px 16px rgba(2,62,138,0.08);
 }
 
 /* ════ SIDEBAR BARU (PENGGANTI .nav LAMA) ════ */
@@ -731,7 +731,7 @@ body {
 .sidebar::before {
   content: ''; position: absolute; top: -80px; right: -80px;
   width: 220px; height: 220px; border-radius: 50%;
-  background: rgba(201,149,58,0.12); pointer-events: none;
+  background: rgba(0,180,216,0.12); pointer-events: none;
 }
 .sidebar::after {
   content: ''; position: absolute; bottom: -60px; left: -60px;
@@ -758,7 +758,7 @@ body {
   width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;
   border-radius: 8px; background: rgba(255,255,255,0.08); font-size: 15px; flex-shrink: 0;
 }
-.nav-item.active .nav-icon { background: rgba(201,149,58,0.25); }
+.nav-item.active .nav-icon { background: rgba(0,180,216,0.25); }
 
 .sidebar-footer { padding: 18px 24px; border-top: 1px solid rgba(255,255,255,0.10); }
 .user-card { display: flex; align-items: center; gap: 10px; cursor: pointer;}
@@ -772,8 +772,8 @@ body {
 .main { margin-left: 260px; }
 
 /* ════ CSS KHUSUS DASHBOARD WAKAF & HALAMAN BARU ════ */
-.wakaf-hero { background: linear-gradient(135deg, var(--emerald) 0%, var(--emerald-mid) 50%, #0d7a5e 100%); border-radius: 20px; padding: 36px 40px; color: #fff; position: relative; overflow: hidden; margin-bottom: 28px; }
-.wakaf-hero::before { content: ''; position: absolute; top: -40px; right: -40px; width: 250px; height: 250px; border-radius: 50%; background: rgba(201,149,58,0.15); }
+.wakaf-hero { background: linear-gradient(135deg, var(--emerald) 0%, var(--emerald-mid) 50%, #0096c7 100%); border-radius: 20px; padding: 36px 40px; color: #fff; position: relative; overflow: hidden; margin-bottom: 28px; }
+.wakaf-hero::before { content: ''; position: absolute; top: -40px; right: -40px; width: 250px; height: 250px; border-radius: 50%; background: rgba(0,180,216,0.15); }
 .wakaf-hero::after { content: ''; position: absolute; bottom: -60px; right: 160px; width: 180px; height: 180px; border-radius: 50%; background: rgba(255,255,255,0.05); }
 .hero-arabic { font-family: 'Amiri', serif; font-size: 18px; color: var(--gold-light); margin-bottom: 10px; opacity: 0.9; }
 .hero-title { font-size: 26px; font-weight: 800; line-height: 1.2; margin-bottom: 8px; }
@@ -785,29 +785,29 @@ body {
 
 .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
 .kpi-card { background: var(--surface); border-radius: 16px; padding: 22px 22px 18px; border: 1px solid var(--border); box-shadow: var(--shadow); position: relative; overflow: hidden; transition: transform 0.2s, box-shadow 0.2s; cursor: default; }
-.kpi-card:hover { transform: translateY(-2px); box-shadow: 0 8px 40px rgba(10,92,68,0.14); }
+.kpi-card:hover { transform: translateY(-2px); box-shadow: 0 8px 40px rgba(2,62,138,0.14); }
 .kpi-icon { width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 14px; }
-.kpi-icon.green { background: rgba(10,92,68,0.10); }
-.kpi-icon.gold { background: rgba(201,149,58,0.12); }
+.kpi-icon.green { background: rgba(2,62,138,0.10); }
+.kpi-icon.gold { background: rgba(0,180,216,0.12); }
 .kpi-icon.blue { background: rgba(59,130,246,0.10); }
 .kpi-icon.red { background: rgba(239,68,68,0.10); }
 .kpi-label { font-size: 11.5px; color: var(--muted); font-weight: 500; letter-spacing: 0.2px; }
 .kpi-value { font-size: 24px; font-weight: 800; color: var(--ink); margin: 6px 0 4px; line-height: 1; }
 .kpi-change { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; border-radius: 20px; padding: 2px 8px; }
-.kpi-change.up { color: var(--emerald); background: rgba(10,92,68,0.08); }
+.kpi-change.up { color: var(--emerald); background: rgba(2,62,138,0.08); }
 .kpi-change.down { color: #ef4444; background: rgba(239,68,68,0.08); }
 
 .content-grid { display: grid; grid-template-columns: 1fr 360px; gap: 20px; margin-bottom: 28px; }
 .card-header { padding: 18px 22px 14px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
-.program-item { }
 .program-list { display: flex; flex-direction: column; gap: 18px; }
+.program-item { }
 .program-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 8px; }
 .program-name { font-size: 13px; font-weight: 600; color: var(--ink); }
 .program-category { font-size: 10px; font-weight: 600; letter-spacing: 0.5px; padding: 2px 8px; border-radius: 20px; text-transform: uppercase; }
 .cat-pendidikan { background: rgba(59,130,246,0.10); color: #3b82f6; }
 .cat-kesehatan { background: rgba(239,68,68,0.10); color: #ef4444; }
-.cat-ekonomi { background: rgba(10,92,68,0.10); color: var(--emerald); }
-.cat-sosial { background: rgba(201,149,58,0.12); color: var(--gold); }
+.cat-ekonomi { background: rgba(2,62,138,0.10); color: var(--emerald); }
+.cat-sosial { background: rgba(0,180,216,0.12); color: var(--gold); }
 .program-amounts { display: flex; align-items: baseline; gap: 4px; margin-bottom: 8px; }
 .prog-collected { font-size: 16px; font-weight: 800; color: var(--emerald); }
 .prog-target { font-size: 11.5px; color: var(--muted); }
@@ -854,8 +854,8 @@ body {
 .prog-table tr:last-child td { border-bottom: none; }
 .prog-table tr:hover td { background: var(--cream); }
 .status-pill { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 10.5px; font-weight: 600; }
-.status-aktif { background: rgba(10,92,68,0.10); color: var(--emerald); }
-.status-selesai { background: rgba(201,149,58,0.12); color: var(--gold); }
+.status-aktif { background: rgba(2,62,138,0.10); color: var(--emerald); }
+.status-selesai { background: rgba(0,180,216,0.12); color: var(--gold); }
 .status-baru { background: rgba(59,130,246,0.10); color: #3b82f6; }
 
 .page-title-block { margin-bottom: 24px; }
@@ -883,14 +883,6 @@ table.data-table tr:hover td { background: var(--cream); }
 </div>
 
 <script>
-function filterRiwayat(el, kategori) {
-  document.querySelectorAll('#riwayat-filter-tabs .ptab').forEach(t => t.classList.remove('active'));
-  el.classList.add('active');
-  document.querySelectorAll('#riwayat-table tbody tr').forEach(row => {
-    row.style.display = (kategori === 'semua' || row.dataset.kategori === kategori) ? '' : 'none';
-  });
-}
-
 /* ── THEME TOGGLE ── */
 function toggleTheme() {
   const isDark = document.body.classList.toggle('dark-mode');
@@ -902,9 +894,9 @@ function toggleTheme() {
 /* ── NAV ── */
 function goPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('page-' + id).classList.add('active');
-  document.querySelectorAll('.nav-item').forEach(b => {
+  document.querySelectorAll('.nav-btn').forEach(b => {
     if (b.getAttribute('onclick') && b.getAttribute('onclick').includes("'" + id + "'")) b.classList.add('active');
   });
 }
